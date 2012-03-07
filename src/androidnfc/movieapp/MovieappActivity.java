@@ -8,6 +8,8 @@ import android.widget.TextView;
 public class MovieappActivity extends Activity {
     /** Called when the activity is first created. */
 	
+	private Button openMap;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
