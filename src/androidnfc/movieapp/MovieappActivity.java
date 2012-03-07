@@ -7,11 +7,15 @@ import android.widget.TextView;
 
 public class MovieappActivity extends Activity {
     /** Called when the activity is first created. */
-	
+	private Button nfcTagButton;
+	private Button xmlParserButton;
+	private Button openBrowser;
+	private Button openMap;
+	private Button openVideo;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Button nfcButton = (Button)findViewById(R.id.nfcTagButton);
+        nfcTagButton = (Button)findViewById(R.id.nfcTagButton);
     }
 }
