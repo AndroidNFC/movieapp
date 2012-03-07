@@ -3,5 +3,10 @@
 
     <string name="hello">Hello World, MovieappActivity!</string>
     <string name="app_name">Movieapp</string>
-
+    <string name="nfcTagbutton">Tap to scan NFC</string>
+	<string name="xmlbutton">Tap to parse XML</string>
+	<string name="browserbutton">Tap to open browser</string>
+	<string name="openMap">Tap to open Map</string>
+	<string name="openVideo">Tap to show video</string>
+	
 </resources>
