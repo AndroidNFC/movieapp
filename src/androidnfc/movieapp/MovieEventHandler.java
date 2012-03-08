@@ -6,6 +6,7 @@ import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.util.Log;
 import androidnfc.movieapp.models.Movie;
 
 public class MovieEventHandler extends DefaultHandler {
@@ -13,6 +14,8 @@ public class MovieEventHandler extends DefaultHandler {
 	private List<Movie> movieList;
 	private Movie tempMovie;
 	private String tempValue;
+	
+	private final String MOVIE_EVENT_DEBUG_TAG = "MovieEventHandler";
 	
 	public List<Movie> getParsedMovies() {
 		return this.movieList;
@@ -25,6 +28,9 @@ public class MovieEventHandler extends DefaultHandler {
 	
 	@Override
 	public void endDocument() {
+		
+		Log.d(MOVIE_EVENT_DEBUG_TAG, String.format("Ending document. %d movies read.", movieList.size()));
+		
 		// Do nothing.
 	}
 	
@@ -42,6 +48,8 @@ public class MovieEventHandler extends DefaultHandler {
 			
 		}
 		
+		Log.d(MOVIE_EVENT_DEBUG_TAG, String.format("In startElement: %s", qName));
+		
 	}
 	
 	@Override
@@ -52,7 +60,7 @@ public class MovieEventHandler extends DefaultHandler {
 	@Override
 	public void endElement(String namespaceURI, String localName, String qName) {
 		
-		if (qName.equals("Movie")) {
+		if (qName.equals("Event")) {
 			
 			this.movieList.add(tempMovie);
 			
