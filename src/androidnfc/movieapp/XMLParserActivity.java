@@ -27,7 +27,7 @@ public class XMLParserActivity extends Activity {
         // The activity is being created.
         
         TextView tv = new TextView(this);
-        tv.setText("Hello, World!");
+        tv.setText("");
         setContentView(tv);
         
         try {

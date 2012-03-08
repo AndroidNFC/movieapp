@@ -1,5 +1,7 @@
 package androidnfc.movieapp;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +19,8 @@ public class MovieEventHandler extends DefaultHandler {
 	
 	private final String MOVIE_EVENT_DEBUG_TAG = "MovieEventHandler";
 	
+	private static final String[] EMPTY_ARRAY = new String[0];
+	
 	public List<Movie> getParsedMovies() {
 		return this.movieList;
 	}
@@ -29,7 +33,7 @@ public class MovieEventHandler extends DefaultHandler {
 	@Override
 	public void endDocument() {
 		
-		Log.d(MOVIE_EVENT_DEBUG_TAG, String.format("Ending document. %d movies read.", movieList.size()));
+		Log.d(MOVIE_EVENT_DEBUG_TAG, String.format("In endDocument(). %d movies read.", movieList.size()));
 		
 		// Do nothing.
 	}
@@ -47,8 +51,6 @@ public class MovieEventHandler extends DefaultHandler {
 			this.tempMovie = new Movie();
 			
 		}
-		
-		Log.d(MOVIE_EVENT_DEBUG_TAG, String.format("In startElement: %s", qName));
 		
 	}
 	
@@ -68,8 +70,75 @@ public class MovieEventHandler extends DefaultHandler {
 			
 			this.tempMovie.setTitle(tempValue);
 			
+		} else if (qName.equals("OriginalTitle")) {
+			
+			this.tempMovie.setOriginalTitle(tempValue);
+			
+		} else if (qName.equals("ProductionYear")) {
+			
+			this.tempMovie.setProductionYear(Integer.parseInt(tempValue));
+			
+		} else if (qName.equals("LengthInMinutes")) {
+			
+			this.tempMovie.setLengthInMinutes(Integer.parseInt(tempValue));
+			
+		} else if (qName.equals("dtLocalRelease")) {
+			
+			this.tempMovie.setDtLocalRelease(tempValue);
+			
+		} else if (qName.equals("Rating")) {
+			
+			this.tempMovie.setRating(Integer.parseInt(tempValue));
+			
+		} else if (qName.equals("RatingLabel")) {
+			
+			this.tempMovie.setRatingLabel(tempValue);
+			
+		} else if (qName.equals("RatingImageUrl")) {
+			
+			this.tempMovie.setRatingImageURL(tempValue);
+			
+		} else if (qName.equals("LocalDistributorName")) {
+			
+			this.tempMovie.setLocalDistributorName(tempValue);
+			
+		} else if (qName.equals("GlobalDistributorName")) {
+			
+			this.tempMovie.setGlobalDistributorName(tempValue);
+			
+		} else if (qName.equals("ProductionCompanies")) {
+			
+			if (!tempValue.equals("-")) {
+				String[] companies = tempValue.split(",");
+				for (String str : companies) {
+					str = str.trim();
+				}
+				this.tempMovie.setProductionCompanies(companies);
+			} else {
+				this.tempMovie.setProductionCompanies(EMPTY_ARRAY);
+			}
+			
+		} else if (qName.equals("Genres")) {
+			
+			if (!tempValue.equals("-")) {
+				String[] genres = tempValue.split(",");
+				for (String str : genres) {
+					str = str.trim();
+				}
+				this.tempMovie.setGenres(genres);
+			} else {
+				this.tempMovie.setGenres(EMPTY_ARRAY);
+			}
+			
+		} else if (qName.equals("Synopsis")) {
+			
+			this.tempMovie.setSynopsis(tempValue);
+			
+		} else if (qName.equals("EventURL")) {
+			
+			this.tempMovie.setEventURL(tempValue);
+			
 		}
-		
 		
 	}
 	

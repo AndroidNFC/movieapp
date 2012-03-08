@@ -2,18 +2,192 @@ package androidnfc.movieapp.models;
 
 public class Movie {
 
+	private int id;
 	private String title;
+	private String originalTitle;
+	private int productionYear;
+	private int lengthInMinutes;
+	private String dtLocalRelease;
+	private int rating;
+	private String ratingLabel;
+	private String ratingImageURL;
+	private String localDistributorName;
+	private String globalDistributorName;
+	private String[] productionCompanies;
+	private String[] genres;
+	private String synopsis;
+	private String eventURL;
+	private String[] imageURLs;
+	private String[] videoURLs;
 	
 	public Movie() {
 		this.title = "unnamed";
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	public String getOriginalTitle() {
+		return originalTitle;
+	}
+
+	public void setOriginalTitle(String originalTitle) {
+		this.originalTitle = originalTitle;
+	}
+
+	public int getProductionYear() {
+		return productionYear;
+	}
+
+	public void setProductionYear(int productionYear) {
+		this.productionYear = productionYear;
+	}
+
+	public int getLengthInMinutes() {
+		return lengthInMinutes;
+	}
+
+	public void setLengthInMinutes(int lengthInMinutes) {
+		this.lengthInMinutes = lengthInMinutes;
+	}
+
+	public String getDtLocalRelease() {
+		return dtLocalRelease;
+	}
+
+	public void setDtLocalRelease(String dtLocalRelease) {
+		this.dtLocalRelease = dtLocalRelease;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+	public String getRatingLabel() {
+		return ratingLabel;
+	}
+
+	public void setRatingLabel(String ratingLabel) {
+		this.ratingLabel = ratingLabel;
+	}
+
+	public String getRatingImageURL() {
+		return ratingImageURL;
+	}
+
+	public void setRatingImageURL(String ratingImageURL) {
+		this.ratingImageURL = ratingImageURL;
+	}
+
+	public String getLocalDistributorName() {
+		return localDistributorName;
+	}
+
+	public void setLocalDistributorName(String localDistributorName) {
+		this.localDistributorName = localDistributorName;
+	}
+
+	public String getGlobalDistributorName() {
+		return globalDistributorName;
+	}
+
+	public void setGlobalDistributorName(String globalDistributorName) {
+		this.globalDistributorName = globalDistributorName;
+	}
+
+	public String[] getProductionCompanies() {
+		return productionCompanies;
+	}
+
+	public void setProductionCompanies(String[] productionCompanies) {
+		this.productionCompanies = productionCompanies;
+	}
+
+	public String[] getGenres() {
+		return genres;
+	}
+
+	public void setGenres(String[] genres) {
+		this.genres = genres;
+	}
+
+	public String getSynopsis() {
+		return synopsis;
+	}
+
+	public void setSynopsis(String synopsis) {
+		this.synopsis = synopsis;
+	}
+
+	public String getEventURL() {
+		return eventURL;
+	}
+
+	public void setEventURL(String eventURL) {
+		this.eventURL = eventURL;
+	}
+
+	public String[] getImageURLs() {
+		return imageURLs;
+	}
+
+	public void setImageURLs(String[] imageURLs) {
+		// not implemented
+	}
+
+	public String[] getVideoURLs() {
+		return this.videoURLs;
+	}
+	
+	public void setVideoURLs(String[] videoURLs) {
+		// not implemented
+	}
+	
+	private String arrayToString(String[] array) {
+		String genreString = "-";
+		if (array.length > 0) {
+			genreString = "";
+			for (int i = 0; i < array.length; i++) {
+				genreString += array[i];
+				if (i < array.length - 1) {
+					genreString += ", ";
+				}
+			}
+		}
+		return genreString;
+	}
 	
 	public String toString() {
-		return this.title;
+		
+		return "Title: " + this.title + "\n" +
+			   "Original Title: " + this.originalTitle + "\n" +
+			   "Production Year: " + this.productionYear + "\n" +
+			   "Length: " + this.lengthInMinutes + "\n" +
+			   "Date: " + this.dtLocalRelease + "\n" +
+			   "Rating: " + this.rating + "\n" +
+			   "Rating Label: " + this.ratingLabel + "\n" +
+			   "Local Distributor: " + this.localDistributorName + "\n" +
+			   "Global Distributor: " + this.globalDistributorName + "\n" +
+			   "Production Companies: " + arrayToString(this.productionCompanies) + "\n" +
+			   "Genres: " + arrayToString(this.genres) + "\n" +
+			   "Synopsis: " + this.synopsis;
 	}
 
 }
