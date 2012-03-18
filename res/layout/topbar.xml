@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topbar"
+    style="@style/TopBar"
+    android:layout_width="match_parent" >
+
+    <ImageView
+        android:id="@+id/topbar_back"
+        style="@style/TopBar_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/topbar_back" />
+
+    <TextView
+        android:id="@+id/appname"
+        style="@style/TopBar_appname"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="0.14"
+        android:text="Movieapp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/search"
+        style="@style/TopBar_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/search" />
+
+</LinearLayout>

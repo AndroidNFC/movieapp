@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- <include android:id="@+id/topbar" layout="@layout/topbar" /> -->
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        style="@style/ContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_marginTop="10dip">
+
+            <EditText
+                android:id="@+id/searchfield"
+                style="@style/searchfield"
+                android:layout_width="266dp"
+                android:layout_height="match_parent"
+                android:hint="Movie name" >
+
+                <requestFocus />
+            </EditText>
+
+            <ImageView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

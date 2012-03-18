@@ -4,6 +4,9 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <include android:id="@+id/topbar" layout="@layout/topbar" />
+
+
     <Button 
 		android:id="@+id/nfcTagButton"
 		android:layout_width="wrap_content"
