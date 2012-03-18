@@ -29,13 +29,13 @@ public class MovieappActivity extends Activity {
     private final class openBrowserOnClickListener implements OnClickListener {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			Toast toast = Toast.makeText(getApplicationContext(), "open browser", Toast.LENGTH_SHORT);
-			toast.setGravity(Gravity.CENTER, 0, 0);
-			toast.show();
-//			Intent it = new Intent();
-//			it.putExtra("CLocation", getReceive());
-//			it.setClass(Selecao.this, N3SeleText.class);
-//			startActivity(it);
+//			Toast toast = Toast.makeText(getApplicationContext(), "open browser", Toast.LENGTH_SHORT);
+//			toast.setGravity(Gravity.CENTER, 0, 0);
+//			toast.show();
+			Intent it = new Intent();
+//			it.putExtra("keyname", "stringdata");
+			it.setClass(MovieappActivity.this, WebDisplay.class);
+			startActivity(it);
 		}
 }
 }
