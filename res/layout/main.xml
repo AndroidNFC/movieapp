@@ -3,11 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    <TextView
-    	android:id="@+id/textView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello" />
+
     <Button 
 		android:id="@+id/nfcTagButton"
 		android:layout_width="wrap_content"
@@ -19,18 +15,19 @@
 		android:layout_height="wrap_content"
 		android:text="@string/xmlbutton" />
 	<Button 
-		android:id="@+id/openBrowser"
+		android:id="@+id/openBrowserButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/browserbutton" />
 	<Button 
-		android:id="@+id/openMap"
+		android:id="@+id/openMapButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/openMap" />
 	<Button 
-		android:id="@+id/openVideo"
+		android:id="@+id/openVideoButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/openVideo" />
+	
 </LinearLayout>
