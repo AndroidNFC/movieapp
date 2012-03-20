@@ -18,7 +18,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.webkit.URLUtil;
 
 import androidnfc.movieapp.models.Movie;
@@ -27,15 +34,29 @@ import androidnfc.movieapp.parsers.MovieHandler;
 public class MovieScheduleActivity extends Activity {
     
 	private final String MOVIE_SCHEDULE_DEBUG_TAG = "MovieScheduleActivity";
+	private final String COVER_FLOW_DEBUG_TAG = "CoverFlow";
+	
+	private CoverFlow coverFlow;
+	private TextView movieTitleText;
+	private ImageView emptyCover;
+	
+    List<Movie> movies;
+    List<ImageView> coverImages;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.schedule);
         
-        CoverFlow coverFlow = new CoverFlow(this);
+        coverFlow = (CoverFlow) findViewById(R.id.schedule_coverflow);
+        movieTitleText = (TextView) findViewById(R.id.schedule_movietitle);
+        emptyCover = (ImageView) findViewById(R.id.schedule_emptycover);
         
-        List<Movie> movies = new LinkedList<Movie>();
-        List<ImageView> coverImages = new LinkedList<ImageView>();
+        movieTitleText.setText("Title");
+        movieTitleText.setGravity(Gravity.CENTER_HORIZONTAL);
+        
+        movies = new ArrayList<Movie>();
+        coverImages = new LinkedList<ImageView>();
         
         try {
         	
@@ -55,6 +76,8 @@ public class MovieScheduleActivity extends Activity {
 			Log.e(MOVIE_SCHEDULE_DEBUG_TAG, "XML Parser Error", e);
 		}
         	
+        Bitmap placeHolder;
+        
 		for (Movie movie : movies) {
 			
 			String imageURLString = movie.getImageURL();
@@ -84,17 +107,34 @@ public class MovieScheduleActivity extends Activity {
 			
 		}
 		
-		Log.d(MOVIE_SCHEDULE_DEBUG_TAG, "Number of cover images: " + coverImages.size());
+		int coverCount = coverImages.size();
+		int initialCoverPos = coverCount / 2;
+		
+		Log.d(MOVIE_SCHEDULE_DEBUG_TAG, "Number of cover images: " + coverCount);
+		Log.d(MOVIE_SCHEDULE_DEBUG_TAG, "ID of initially selected cover image: " + initialCoverPos);
         
         ImageAdapter coverImageAdapter = new ImageAdapter(this);
         coverImageAdapter.loadImages(coverImages);
         coverFlow.setAdapter(coverImageAdapter);
         
-        coverFlow.setSpacing(-25);
-        coverFlow.setSelection(4, true);
-        coverFlow.setAnimationDuration(1000);
+		// Some configuration options.
+        coverFlow.setEmptyView(emptyCover);
+        coverFlow.setSpacing(0);
+        coverFlow.setSelection(initialCoverPos, false);
+        coverFlow.setAnimationDuration(500);
+        coverFlow.setOnItemSelectedListener(new OnItemSelectedListener() {
+        	
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				Log.d(COVER_FLOW_DEBUG_TAG, "position: " + position + ", id: " + id);
+				movieTitleText.setText(MovieScheduleActivity.this.movies.get(position).getTitle());
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// Do nothing?
+			}
+        	
+		});
         
-        setContentView(coverFlow);
+        movieTitleText.setText(MovieScheduleActivity.this.movies.get(initialCoverPos).getTitle());
         
     }
 	
