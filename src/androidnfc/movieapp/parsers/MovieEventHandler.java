@@ -1,4 +1,4 @@
-package androidnfc.movieapp;
+package androidnfc.movieapp.parsers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <!-- <include android:id="@+id/topbar" layout="@layout/topbar" /> -->
+    <include android:id="@+id/topbar" layout="@layout/toplessbar" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -28,20 +28,28 @@
 
             <EditText
                 android:id="@+id/searchfield"
-                style="@style/searchfield"
                 android:layout_width="266dp"
-                android:layout_height="match_parent"
+                android:layout_height="30dip"
                 android:hint="Movie name" >
 
                 <requestFocus />
             </EditText>
 
             <ImageView
-                android:id="@+id/search"
+                android:id="@+id/searchButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/search" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/resultLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ContentLayout"
+        android:orientation="vertical" >
+
     </LinearLayout>
 
 </LinearLayout>

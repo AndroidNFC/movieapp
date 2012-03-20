@@ -37,4 +37,14 @@
   	<style name="searchfield">
         <item name="android:background">#000000</item>
     </style>
+        <style name="SearchResult">
+        <item name="android:background">#000000</item>
+        <item name="android:layout_height">38dip</item>
+        <item name="android:textColor">#e4e4e4</item>
+        <item name="android:textSize">18dip</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+     <style name="SearchResultYear">
+        <item name="android:textColor">#a4a4a4</item>
+    </style>
 </resources>

@@ -20,11 +20,4 @@
         android:text="Movieapp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageView
-        android:id="@+id/topbarSearch"
-        style="@style/TopBar_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/search" />
-
 </LinearLayout>
