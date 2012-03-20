@@ -8,7 +8,7 @@ public class Movie {
 	private int productionYear;
 	private int lengthInMinutes;
 	private String dtLocalRelease;
-	private int rating;
+	private String rating; // age limit
 	private String ratingLabel;
 	private String ratingImageURL;
 	private String localDistributorName;
@@ -17,8 +17,8 @@ public class Movie {
 	private String[] genres;
 	private String synopsis;
 	private String eventURL;
-	private String[] imageURLs;
-	private String[] videoURLs;
+	private String imageURL;
+	private String videoURL;
 	
 	public Movie() {
 		this.title = "unnamed";
@@ -72,11 +72,11 @@ public class Movie {
 		this.dtLocalRelease = dtLocalRelease;
 	}
 
-	public int getRating() {
+	public String getRating() {
 		return rating;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(String rating) {
 		this.rating = rating;
 	}
 
@@ -144,20 +144,20 @@ public class Movie {
 		this.eventURL = eventURL;
 	}
 
-	public String[] getImageURLs() {
-		return imageURLs;
+	public String getImageURL() {
+		return imageURL;
 	}
 
-	public void setImageURLs(String[] imageURLs) {
-		// not implemented
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
-	public String[] getVideoURLs() {
-		return this.videoURLs;
+	public String getVideoURL() {
+		return this.videoURL;
 	}
 	
-	public void setVideoURLs(String[] videoURLs) {
-		// not implemented
+	public void setVideoURL(String videoURL) {
+		this.videoURL = videoURL;
 	}
 	
 	private String arrayToString(String[] array) {
@@ -187,7 +187,8 @@ public class Movie {
 			   "Global Distributor: " + this.globalDistributorName + "\n" +
 			   "Production Companies: " + arrayToString(this.productionCompanies) + "\n" +
 			   "Genres: " + arrayToString(this.genres) + "\n" +
-			   "Synopsis: " + this.synopsis;
+			   "Synopsis: " + this.synopsis + "\n" +
+			   "Image URL: " + this.imageURL;
 	}
 
 }

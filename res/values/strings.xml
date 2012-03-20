@@ -8,5 +8,6 @@
 	<string name="browserbutton">Tap to open browser</string>
 	<string name="openMap">Tap to open Map</string>
 	<string name="openVideo">Tap to show video</string>
+	<string name="inTheaters">In theaters</string>
 	
 </resources>

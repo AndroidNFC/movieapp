@@ -24,7 +24,6 @@ public class XMLParserActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // The activity is being created.
         
         TextView tv = new TextView(this);
         tv.setText("");
@@ -38,7 +37,7 @@ public class XMLParserActivity extends Activity {
 			SAXParser parser = spf.newSAXParser();
 			
 			XMLReader reader = parser.getXMLReader();
-			MovieEventHandler handler = new MovieEventHandler();
+			MovieHandler handler = new MovieHandler();
 			reader.setContentHandler(handler);
 			
 			reader.parse(new InputSource(url.openStream()));

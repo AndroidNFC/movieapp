@@ -20,6 +20,7 @@ public class MovieappActivity extends Activity {
 	private Button openBrowserButton;
 	private Button openMapButton;
 	private Button openVideoButton;
+	private Button inTheatersButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,14 +29,19 @@ public class MovieappActivity extends Activity {
         setContentView(R.layout.main);
         
         nfcTagButton = (Button)findViewById(R.id.nfcTagButton);
-        nfcTagButton.setOnClickListener(new nfcTagOnClickListener());
+        
+        xmlParserButton = (Button)findViewById(R.id.xmlParserButton);
+        xmlParserButton.setOnClickListener(new xmlParserOnClickListener());
         
         openBrowserButton = (Button)findViewById(R.id.openBrowserButton);
         openBrowserButton.setOnClickListener(new openBrowserOnClickListener());
         
+        inTheatersButton = (Button)findViewById(R.id.inTheatersButton);
+        inTheatersButton.setOnClickListener(new inTheatersOnClickListener());
+        
     }
     
-    private final class nfcTagOnClickListener implements OnClickListener {
+    private final class xmlParserOnClickListener implements OnClickListener {
 		public void onClick(View v) {
 			Intent intent = new Intent(MovieappActivity.this,
 									   XMLParserActivity.class);
@@ -50,6 +56,14 @@ public class MovieappActivity extends Activity {
 			Intent it = new Intent();
 			it.setClass(MovieappActivity.this, WebDisplay.class);
 			startActivity(it);
+		}
+    }
+    
+    private final class inTheatersOnClickListener implements OnClickListener {
+		public void onClick(View v) {
+			Intent intent = new Intent(MovieappActivity.this,
+									   MovieScheduleActivity.class);
+			MovieappActivity.this.startActivity(intent);
 		}
     }
 

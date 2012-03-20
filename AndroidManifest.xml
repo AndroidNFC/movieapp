@@ -21,10 +21,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".WebDisplay" android:label="Web Display"
-			android:multiprocess = "true">
+			android:multiprocess="true">
 		</activity>
         <activity
             android:name=".XMLParserActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".MovieScheduleActivity"
             android:label="@string/app_name" >
         </activity>
     </application>
