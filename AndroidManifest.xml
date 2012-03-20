@@ -21,6 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".WebDisplay" android:label="Web Display"
+			android:multiprocess = "true">
+		</activity>
         <activity
             android:name=".MovieDetailsActivity"
             android:label="@string/app_name" >

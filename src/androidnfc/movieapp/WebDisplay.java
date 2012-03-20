@@ -21,7 +21,8 @@ public class WebDisplay extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.webdisplay); 
+
+		setContentView(R.layout.webdisplay);
 		
 		//create a web view
 		WebView myWebView = (WebView) findViewById(R.id.webview);
