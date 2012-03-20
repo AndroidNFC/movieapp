@@ -48,7 +48,6 @@ public class XMLParserActivity extends Activity {
 				tv.append(movie.toString());
 			}
 			
-			
         } catch (Exception e) {
 			tv.setText("Error: " + e.getMessage());
 			Log.e(XML_PARSER_DEBUG_TAG, "XML Parser Error", e);

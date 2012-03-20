@@ -23,11 +23,24 @@ public class MovieappActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
         nfcTagButton = (Button)findViewById(R.id.nfcTagButton);
+        nfcTagButton.setOnClickListener(new nfcTagOnClickListener());
+        
         openBrowserButton = (Button)findViewById(R.id.openBrowserButton);
         openBrowserButton.setOnClickListener(new openBrowserOnClickListener());
+        
+    }
+    
+    private final class nfcTagOnClickListener implements OnClickListener {
+		public void onClick(View v) {
+			Intent intent = new Intent(MovieappActivity.this,
+									   XMLParserActivity.class);
+			MovieappActivity.this.startActivity(intent);
+		}
     }
     
     //call web view
@@ -39,18 +52,5 @@ public class MovieappActivity extends Activity {
 			startActivity(it);
 		}
     }
-    //Dear Tatu, you have problem with the following line, I marked it.
-//        nfcTagButton =		(Button)findViewById(R.id.nfcTagButton);
-//    xmlParserButton = 	(Button)findViewById(R.id.xmlParserButton);
-//        openBrowserButton = (Button)findViewById(R.id.openBrowserButton);
-//        openMapButton = 	(Button)findViewById(R.id.openMapButton);
-//        openVideoButton = 	(Button)findViewById(R.id.openVideoButton);
-        
-//        xmlParserButton.setOnClickListener(new View.OnClickListener() {
-//			public void onClick(View v) {
-//				Intent intent = new Intent(MovieappActivity.this,
-//										   XMLParserActivity.class);
-//				MovieappActivity.this.startActivity(intent);
-//			}
-//		});
+
 }
