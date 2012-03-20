@@ -7,27 +7,42 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.View;
-import android.widget.Button;
 
+import android.widget.ImageView;
 
 public class MovieappActivity extends Activity {
-	/** Called when the activity is first created. */
+
 	private Button nfcTagButton;
 	private Button xmlParserButton;
 	private Button openBrowserButton;
 	private Button openMapButton;
 	private Button openVideoButton;
 	private Button inTheatersButton;
+	private Button movieDetailsButton;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    	
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		// TODO Glue for Top Panel. This should be integrated in some
+		// TopPanelView-widget or so
+		{
+			ImageView back = (ImageView) findViewById(R.id.topbar_back);
+			back.setAlpha(0);
+
+			ImageView search = (ImageView) findViewById(R.id.topbarSearch);
+			search.setOnClickListener(new View.OnClickListener() {
+
+				public void onClick(View v) {
+					Intent intent = new Intent(MovieappActivity.this,
+							SearchActivity.class);
+					MovieappActivity.this.startActivity(intent);
+				}
+			});
+		}
+
         nfcTagButton = (Button)findViewById(R.id.nfcTagButton);
         
         xmlParserButton = (Button)findViewById(R.id.xmlParserButton);
@@ -38,26 +53,35 @@ public class MovieappActivity extends Activity {
         
         inTheatersButton = (Button)findViewById(R.id.inTheatersButton);
         inTheatersButton.setOnClickListener(new inTheatersOnClickListener());
-        
-    }
-    
-    private final class xmlParserOnClickListener implements OnClickListener {
+
+        movieDetailsButton = (Button)findViewById(R.id.movieDetailsButton);
+		movieDetailsButton.setOnClickListener(new movieDetailsOnClickListener());
+	}
+
+	private class movieDetailsOnClickListener implements OnClickListener {
 		public void onClick(View v) {
 			Intent intent = new Intent(MovieappActivity.this,
-									   XMLParserActivity.class);
+					MovieDetailsActivity.class);
 			MovieappActivity.this.startActivity(intent);
 		}
-    }
-    
-    //call web view
-    private final class openBrowserOnClickListener implements OnClickListener {
+	}
+
+	private class xmlParserOnClickListener implements OnClickListener {
+		public void onClick(View v) {
+			Intent intent = new Intent(MovieappActivity.this,
+					XMLParserActivity.class);
+			MovieappActivity.this.startActivity(intent);
+		}
+	}
+
+	private final class openBrowserOnClickListener implements OnClickListener {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent it = new Intent();
 			it.setClass(MovieappActivity.this, WebDisplay.class);
 			startActivity(it);
 		}
-    }
+	}
     
     private final class inTheatersOnClickListener implements OnClickListener {
 		public void onClick(View v) {

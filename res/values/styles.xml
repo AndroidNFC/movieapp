@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MovieappTheme" parent="android:Theme.Black.NoTitleBar">
+        <item name="android:textColor">#e4e4e4</item>
+    </style>
+
+    <style name="h1" parent="android:style/TextAppearance.Large">
+        <item name="android:textColor">#0099cc</item>
+    </style>
+
+    <style name="TopBar">
+        <item name="android:background">#222222</item>
+        <item name="android:layout_height">38dip</item>
+        <item name="android:textColor">#f5f5f5</item>
+        <item name="android:textSize">25dip</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TopBar_back">
+        <item name="android:paddingTop">4dip</item>
+    </style>
+
+    <style name="TopBar_appname">
+        <item name="android:height">25dip</item>
+        <item name="android:paddingTop">8dip</item>
+    </style>
+
+    <style name="TopBar_search">
+        <item name="android:paddingTop">4dip</item>
+    </style>
+
+    <style name="ContentLayout">
+        <item name="android:padding">5dip</item>
+    </style>
+  	<style name="searchfield">
+        <item name="android:background">#000000</item>
+    </style>
+        <style name="SearchResult">
+        <item name="android:background">#000000</item>
+        <item name="android:layout_height">38dip</item>
+        <item name="android:textColor">#e4e4e4</item>
+        <item name="android:textSize">18dip</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+     <style name="SearchResultYear">
+        <item name="android:textColor">#a4a4a4</item>
+    </style>
+</resources>

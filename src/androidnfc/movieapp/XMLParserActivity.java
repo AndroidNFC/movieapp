@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidnfc.movieapp.models.Movie;
+import androidnfc.movieapp.parsers.MovieHandler;
 
 public class XMLParserActivity extends Activity {
 	
