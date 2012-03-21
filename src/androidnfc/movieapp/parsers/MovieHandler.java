@@ -8,19 +8,32 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
 import androidnfc.movieapp.models.Movie;
+import androidnfc.movieapp.models.Show;
 
 public class MovieHandler extends DefaultHandler {
 	
 	private List<Movie> movieList;
+	private List<Show> showList;
 	private Movie tempMovie;
+	private Show tempShow;
 	private String tempValue;
 	
 	private final String MOVIE_EVENT_DEBUG_TAG = "MovieEventHandler";
 	
 	private static final String[] EMPTY_ARRAY = new String[0];
 	
+	/*
+	 * Returns a list of parsed movies with duplicates removed.
+	 */
 	public List<Movie> getParsedMovies() {
 		return this.movieList;
+	}
+	
+	/*
+	 * Returns a list parsed shows.
+	 */
+	public List<Show> getParsedShows() {
+		return this.showList;
 	}
 
 	@Override
@@ -31,21 +44,31 @@ public class MovieHandler extends DefaultHandler {
 	@Override
 	public void endDocument() {
 		
-		Log.d(MOVIE_EVENT_DEBUG_TAG, String.format("In endDocument(). %d movies read.", movieList.size()));
-		
-		// Do nothing.
+		Log.d(MOVIE_EVENT_DEBUG_TAG, String.format("Read %d movies.", movieList.size()));
+		Log.d(MOVIE_EVENT_DEBUG_TAG, String.format("Read %d shows.", showList.size()));
+
 	}
 	
 	@Override
 	public void startElement(String namespaceURI, String localName,
 							 String qName, Attributes attrs) {
 		
-		if (qName.equals("Events") || qName.equals("Shows")) {
-			
+		if (qName.equals("Events")) {
+
 			this.movieList = new LinkedList<Movie>();
 			
-		} else if (qName.equals("Event") || qName.equals("Show")) {
+		} else if (qName.equals("Shows")) {
 			
+			this.showList = new LinkedList<Show>();
+			this.movieList = new LinkedList<Movie>();
+			
+		} else if (qName.equals("Event")) {
+			
+			this.tempMovie = new Movie();
+			
+		} else if (qName.equals("Show")) {
+			
+			this.tempShow = new Show();
 			this.tempMovie = new Movie();
 			
 		}
@@ -60,9 +83,30 @@ public class MovieHandler extends DefaultHandler {
 	@Override
 	public void endElement(String namespaceURI, String localName, String qName) {
 		
-		if (qName.equals("Event") || qName.equals("Show")) {
+		if (qName.equals("Event")) {
 			
 			this.movieList.add(tempMovie);
+			
+		} else if (qName.equals("Show")) {
+
+			tempShow.setMovie(tempMovie);
+			this.showList.add(tempShow);
+			
+			boolean movieIsDuplicate = false;
+			for (Movie movie : this.movieList) {
+				if (movie.getEventID() == tempMovie.getEventID()) {
+					movieIsDuplicate = true;
+					Log.d(MOVIE_EVENT_DEBUG_TAG, "Duplicate Found.");
+					break;
+				}
+			}
+			if (!movieIsDuplicate) {
+				this.movieList.add(tempMovie);
+			}
+			
+		} else if (qName.equals("EventID")) {
+			
+			this.tempMovie.setEventID(Integer.parseInt(tempValue));
 			
 		} else if (qName.equals("Title")) {
 			
@@ -139,6 +183,30 @@ public class MovieHandler extends DefaultHandler {
 		} else if (qName.equals("EventLargeImagePortrait")) {
 			
 			this.tempMovie.setImageURL(tempValue);
+			
+		} else if (qName.equals("dttmShowStart")) {
+			
+			this.tempShow.setShowStart(tempValue);
+			
+		} else if (qName.equals("TheatreID")) {
+			
+			this.tempShow.setTheaterID(Integer.parseInt(tempValue));
+			
+		} else if (qName.equals("TheatreAuditriumID")) {
+			
+			this.tempShow.setTheaterHallID(Integer.parseInt(tempValue));
+			
+		} else if (qName.equals("Theatre")) {
+			
+			this.tempShow.setTheater(tempValue);
+			
+		} else if (qName.equals("TheatreAuditorium")) {
+			
+			this.tempShow.setTheaterHall(tempValue);
+			
+		} else if (qName.equals("PresentationMethodAndLanguage")) {
+			
+			this.tempShow.setPresentationMethodAndLanguage(tempValue);
 			
 		}
 		

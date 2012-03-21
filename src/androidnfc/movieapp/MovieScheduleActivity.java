@@ -42,6 +42,8 @@ public class MovieScheduleActivity extends Activity {
 	
     List<Movie> movies;
     List<ImageView> coverImages;
+    
+    ImageAdapter coverImageAdapter;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,8 +77,6 @@ public class MovieScheduleActivity extends Activity {
         } catch (Exception e) {
 			Log.e(MOVIE_SCHEDULE_DEBUG_TAG, "XML Parser Error", e);
 		}
-        	
-        Bitmap placeHolder;
         
 		for (Movie movie : movies) {
 			
@@ -113,7 +113,7 @@ public class MovieScheduleActivity extends Activity {
 		Log.d(MOVIE_SCHEDULE_DEBUG_TAG, "Number of cover images: " + coverCount);
 		Log.d(MOVIE_SCHEDULE_DEBUG_TAG, "ID of initially selected cover image: " + initialCoverPos);
         
-        ImageAdapter coverImageAdapter = new ImageAdapter(this);
+        coverImageAdapter = new ImageAdapter(this);
         coverImageAdapter.loadImages(coverImages);
         coverFlow.setAdapter(coverImageAdapter);
         
@@ -122,17 +122,7 @@ public class MovieScheduleActivity extends Activity {
         coverFlow.setSpacing(0);
         coverFlow.setSelection(initialCoverPos, false);
         coverFlow.setAnimationDuration(500);
-        coverFlow.setOnItemSelectedListener(new OnItemSelectedListener() {
-        	
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				Log.d(COVER_FLOW_DEBUG_TAG, "position: " + position + ", id: " + id);
-				movieTitleText.setText(MovieScheduleActivity.this.movies.get(position).getTitle());
-			}
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// Do nothing?
-			}
-        	
-		});
+        coverFlow.setOnItemSelectedListener(new coverSelectedListener());
         
         movieTitleText.setText(MovieScheduleActivity.this.movies.get(initialCoverPos).getTitle());
         
@@ -162,6 +152,18 @@ public class MovieScheduleActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         // The activity is about to be destroyed.
+    }
+    
+    private final class coverSelectedListener implements OnItemSelectedListener {
+    	
+		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			Log.d(COVER_FLOW_DEBUG_TAG, "position: " + position + ", id: " + id);
+			movieTitleText.setText(MovieScheduleActivity.this.movies.get(position).getTitle());
+		}
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// Do nothing?
+		}
+		
     }
 	
 }

@@ -2,7 +2,7 @@ package androidnfc.movieapp.models;
 
 public class Movie {
 
-	private int id;
+	private int movieID;
 	private String title;
 	private String originalTitle;
 	private int productionYear;
@@ -24,12 +24,12 @@ public class Movie {
 		this.title = "unnamed";
 	}
 
-	public int getId() {
-		return id;
+	public int getEventID() {
+		return this.movieID;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setEventID(int id) {
+		this.movieID = id;
 	}
 
 	public String getTitle() {
