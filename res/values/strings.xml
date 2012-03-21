@@ -10,5 +10,6 @@
 	<string name="openVideo">Tap to show video</string>
 	<string name="inTheaters">In theaters</string>
 	<string name="movieDetails">Movie details</string>
+	<string name="fetchingXML">Fetching XML</string>
 	
 </resources>

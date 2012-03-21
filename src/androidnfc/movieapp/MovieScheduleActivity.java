@@ -14,13 +14,17 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -40,11 +44,6 @@ public class MovieScheduleActivity extends Activity {
 	private TextView movieTitleText;
 	private ImageView emptyCover;
 	
-    List<Movie> movies;
-    List<ImageView> coverImages;
-    
-    ImageAdapter coverImageAdapter;
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,77 +53,11 @@ public class MovieScheduleActivity extends Activity {
         movieTitleText = (TextView) findViewById(R.id.schedule_movietitle);
         emptyCover = (ImageView) findViewById(R.id.schedule_emptycover);
         
-        movieTitleText.setText("Title");
+        movieTitleText.setText("");
         movieTitleText.setGravity(Gravity.CENTER_HORIZONTAL);
         
-        movies = new ArrayList<Movie>();
-        coverImages = new LinkedList<ImageView>();
-        
-        try {
-        	
-			URL url = new URL ("http://www.finnkino.fi/xml/Schedule/");
-		
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			SAXParser parser = spf.newSAXParser();
-			
-			XMLReader reader = parser.getXMLReader();
-			MovieHandler handler = new MovieHandler();
-			reader.setContentHandler(handler);
-			
-			reader.parse(new InputSource(url.openStream()));
-			movies = handler.getParsedMovies();
-			
-        } catch (Exception e) {
-			Log.e(MOVIE_SCHEDULE_DEBUG_TAG, "XML Parser Error", e);
-		}
-        
-		for (Movie movie : movies) {
-			
-			String imageURLString = movie.getImageURL();
-			if (URLUtil.isHttpUrl(imageURLString)) {
-			
-				try {
-					
-					URL imageURL = new URL(movie.getImageURL());
-					
-					try {
-						
-						Bitmap bitmap;
-						bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-						ImageView imageView = new ImageView(this);
-						imageView.setImageBitmap(bitmap);
-						coverImages.add(imageView);
-						
-					} catch (IOException e) {
-						Log.e(MOVIE_SCHEDULE_DEBUG_TAG, "Failed to decode bitmap image.", e);
-					}
-					
-				} catch (MalformedURLException e) {
-					Log.e(MOVIE_SCHEDULE_DEBUG_TAG, "XML contained a malformed URL: " + movie.getImageURL(), e);
-				}
-			
-			}
-			
-		}
-		
-		int coverCount = coverImages.size();
-		int initialCoverPos = coverCount / 2;
-		
-		Log.d(MOVIE_SCHEDULE_DEBUG_TAG, "Number of cover images: " + coverCount);
-		Log.d(MOVIE_SCHEDULE_DEBUG_TAG, "ID of initially selected cover image: " + initialCoverPos);
-        
-        coverImageAdapter = new ImageAdapter(this);
-        coverImageAdapter.loadImages(coverImages);
-        coverFlow.setAdapter(coverImageAdapter);
-        
-		// Some configuration options.
-        coverFlow.setEmptyView(emptyCover);
-        coverFlow.setSpacing(0);
-        coverFlow.setSelection(initialCoverPos, false);
-        coverFlow.setAnimationDuration(500);
-        coverFlow.setOnItemSelectedListener(new coverSelectedListener());
-        
-        movieTitleText.setText(MovieScheduleActivity.this.movies.get(initialCoverPos).getTitle());
+        FetchFinnkinoXMLTask myTask = new FetchFinnkinoXMLTask(this);
+        myTask.execute("http://www.finnkino.fi/xml/Schedule/");
         
     }
 	
@@ -152,18 +85,6 @@ public class MovieScheduleActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         // The activity is about to be destroyed.
-    }
-    
-    private final class coverSelectedListener implements OnItemSelectedListener {
-    	
-		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			Log.d(COVER_FLOW_DEBUG_TAG, "position: " + position + ", id: " + id);
-			movieTitleText.setText(MovieScheduleActivity.this.movies.get(position).getTitle());
-		}
-		public void onNothingSelected(AdapterView<?> arg0) {
-			// Do nothing?
-		}
-		
     }
 	
 }
