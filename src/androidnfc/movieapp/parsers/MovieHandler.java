@@ -22,6 +22,13 @@ public class MovieHandler extends DefaultHandler {
 	
 	private static final String[] EMPTY_ARRAY = new String[0];
 	
+	public MovieHandler() {
+		
+		this.showList = new LinkedList<Show>();
+		this.movieList = new LinkedList<Movie>();
+		
+	}
+	
 	/*
 	 * Returns a list of parsed movies with duplicates removed.
 	 */
@@ -55,12 +62,11 @@ public class MovieHandler extends DefaultHandler {
 		
 		if (qName.equals("Events")) {
 
-			this.movieList = new LinkedList<Movie>();
+			// Do nothing for now.
 			
 		} else if (qName.equals("Shows")) {
 			
-			this.showList = new LinkedList<Show>();
-			this.movieList = new LinkedList<Movie>();
+			// Do nothing for now.
 			
 		} else if (qName.equals("Event")) {
 			
