@@ -16,7 +16,6 @@ import android.util.Log;
  *
  */
 public class WebDisplay extends Activity {
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,7 +39,7 @@ public class WebDisplay extends Activity {
 		 * http://www.traileraddict.com/player.swf?id=31763&e=y
 		 * but this require to install Adobe Flash
 		 * **/
-
+		//SearchActivity.trailerId;
 		myWebView.loadUrl("http://www.traileraddict.com/player.swf?id=31766&e=y");
 	}
 	
