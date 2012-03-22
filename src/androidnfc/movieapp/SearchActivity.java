@@ -63,16 +63,17 @@ public class SearchActivity extends Activity {
 			}
 		});
 
-//		List<SearchResultMovie> imaginaryResults = new ArrayList<SearchResultMovie>();
-//		for (int i = 0; i < 10; i++) {
-//			imaginaryResults.add(createFooMovie(i));
-//		}
-//		setSearchResults(imaginaryResults);
+		// List<SearchResultMovie> imaginaryResults = new
+		// ArrayList<SearchResultMovie>();
+		// for (int i = 0; i < 10; i++) {
+		// imaginaryResults.add(createFooMovie(i));
+		// }
+		// setSearchResults(imaginaryResults);
 	}
 
 	private void search(String text) {
 		Log.d("search", "Searching for " + text);
-		//TODO: Cache stuff
+		// TODO: Cache stuff
 		List<SearchResultMovie> results = ImdbJSONParser.create().search(text);
 		if (results.size() > 0) {
 			setSearchResults(results);
@@ -80,15 +81,14 @@ public class SearchActivity extends Activity {
 			resultLayout.removeAllViewsInLayout();
 			TextView resultText = new TextView(getApplicationContext());
 
-			resultText.setText("No results for "+text);
+			resultText.setText("No results for " + text);
 			resultLayout.addView(resultText);
 		}
-		
-		
+
 	}
 
 	private void setSearchResults(List<SearchResultMovie> results) {
-		
+
 		resultLayout.removeAllViewsInLayout();
 		TextView resultText = new TextView(getApplicationContext());
 
@@ -102,35 +102,29 @@ public class SearchActivity extends Activity {
 		resultLayout.addView(line, new ViewGroup.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, 2));
 
-		if (results.size() > 0) {
-			ListView list = new ListView(getApplicationContext());
-			resultLayout.addView(list);
+		ListView list = new ListView(getApplicationContext());
+		resultLayout.addView(list);
 
-			final SearchResultMovie[] res = new SearchResultMovie[results
-					.size()];
-			ResultArrayAdapter adapter = new ResultArrayAdapter(
-					getApplicationContext(), results.toArray(res));
-			list.setAdapter(adapter);
+		final SearchResultMovie[] res = new SearchResultMovie[results.size()];
+		ResultArrayAdapter adapter = new ResultArrayAdapter(
+				getApplicationContext(), results.toArray(res));
+		list.setAdapter(adapter);
 
-			list.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
+		list.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 
-					SearchResultMovie model = res[position];
+				SearchResultMovie model = res[position];
 
-					Intent intent = new Intent(SearchActivity.this,
-							MovieDetailsActivity.class);
-					intent.putExtra(MovieDetailsActivity.EXTRAS_KEY_IMDB_ID,
-							model.getImdbId());
-					intent.putExtra(
-							MovieDetailsActivity.EXTRAS_KEY_FINNKINO_ID,
-							model.getFinnkinoId());
-					SearchActivity.this.startActivity(intent);
-				}
-			});
-		} else {
-			// TODO display 'no results'
-		}
+				Intent intent = new Intent(SearchActivity.this,
+						MovieDetailsActivity.class);
+				intent.putExtra(MovieDetailsActivity.EXTRAS_KEY_IMDB_ID,
+						model.getImdbId());
+				intent.putExtra(MovieDetailsActivity.EXTRAS_KEY_FINNKINO_ID,
+						model.getFinnkinoId());
+				SearchActivity.this.startActivity(intent);
+			}
+		});
 
 	}
 
@@ -151,22 +145,12 @@ public class SearchActivity extends Activity {
 			View rowView = inflater.inflate(R.layout.searchresult, parent,
 					false);
 			TextView name = (TextView) rowView.findViewById(R.id.resultName);
-			TextView desc = (TextView) rowView.findViewById(R.id.resultDescription);
+			TextView desc = (TextView) rowView
+					.findViewById(R.id.resultDescription);
 			name.setText(values[position].getTitle());
 			desc.setText(String.valueOf(values[position].getDescription()));
 			return rowView;
 		}
 	}
 
-	/**
-	 * Just a dummy method to create data. Remove.
-	 */
-	private SearchResultMovie createFooMovie(int i) {
-		SearchResultMovie r = new SearchResultMovie();
-		r.setImdbId("tt1306980");
-		r.setFinnkinoId(298876);
-		r.setTitle("Top Gun " + i);
-		r.setDescription(1986 + 2 * i + ", Tom Cruise..");
-		return r;
-	}
 }
