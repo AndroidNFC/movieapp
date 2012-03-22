@@ -41,7 +41,7 @@ public class WebDisplay extends Activity {
 		 * but this require to install Adobe Flash
 		 * **/
 
-		myWebView.loadUrl("http://www.traileraddict.com/player.swf?id=31763&e=y");
+		myWebView.loadUrl("http://www.traileraddict.com/player.swf?id=31766&e=y");
 	}
 	
 }

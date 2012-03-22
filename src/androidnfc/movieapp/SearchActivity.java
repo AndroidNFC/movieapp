@@ -35,7 +35,7 @@ public class SearchActivity extends Activity {
 	private Button openMapButton;
 	private Button openVideoButton;
 	private LinearLayout resultLayout;
-
+	public static String trailerURL = ""; 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
