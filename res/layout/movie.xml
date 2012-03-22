@@ -88,8 +88,8 @@
                     android:id="@+id/movie_poster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#404040"
                     android:maxWidth="220dip"
+                    android:maxHeight="220dip"
                     android:text="Poster" />
             </LinearLayout>
 

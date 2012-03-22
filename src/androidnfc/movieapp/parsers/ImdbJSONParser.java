@@ -33,6 +33,9 @@ public class ImdbJSONParser {
 	private final String IMDBAPI_URL = "http://www.imdbapi.com/";
 	private final String SEARCH_API_URL = "http://www.imdb.com/xml/find?json=1&nr=1&tt=on&q=";
 	
+	public static ImdbJSONParser create() {
+		return new ImdbJSONParser();
+	}
 	public List<SearchResultMovie> search(String text){
 		String json = getHttpJsonResponse(SEARCH_API_URL+text);
 		List<SearchResultMovie> result = new ArrayList<SearchResultMovie>();
@@ -47,6 +50,7 @@ public class ImdbJSONParser {
 						r.setImdbId(o.getString("id"));
 						r.setDescription(o.getString("title_description"));
 						r.setTitle(o.getString("title"));
+						result.add(r);
 					}
 				}
 			}
@@ -88,6 +92,7 @@ public class ImdbJSONParser {
 					
 				}
 				m.setWriter(o.getString("Writer"));
+				m.setTitle(o.getString("Title"));
 				return m;
 			} else {
 				Log.e(DEBUG_TAG, "Error in parsing "+id);

@@ -17,8 +17,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidnfc.movieapp.common.ImageLoader;
+import androidnfc.movieapp.models.ImdbMovie;
 import androidnfc.movieapp.models.Movie;
 import androidnfc.movieapp.parsers.FinnkinoXMLParser;
+import androidnfc.movieapp.parsers.ImdbJSONParser;
 import androidnfc.movieapp.parsers.MovieHandler;
 
 public class MovieDetailsActivity extends Activity {
@@ -34,7 +36,7 @@ public class MovieDetailsActivity extends Activity {
 	private TextView cast;
 	private ImageView poster;
 	private Bitmap bitmapResult;
-	private Movie currentMovie;
+	private ImdbMovie currentMovie;
 	final Handler handler = new Handler();
 	final Runnable posterExecutor = new Runnable() {
 		public void run() {
@@ -91,24 +93,20 @@ public class MovieDetailsActivity extends Activity {
 				return;
 			}
 			final String imdbId = o1.toString();
-			final int finnkinoId = (Integer) o2;
 			try {
 				// Load stuff async
 				// TODO: Add loading-indicator
 				Thread t = new Thread() {
 
 					public void run() {
-						List<Movie> movies = new FinnkinoXMLParser()
-								.parse(finnkinoId);
-						if (movies == null || movies.size() != 1) {
+						ImdbMovie movie = ImdbJSONParser.create().fetchMovie(imdbId);
+						if (movie == null) {
 							throw new UnsupportedOperationException();
 						}
-
-						currentMovie = movies.get(0);
-
+						currentMovie = movie;
 						// TODO: Add image cache
 						bitmapResult = ImageLoader.loadImage(currentMovie
-								.getImageURL());
+								.getPosterUrl());
 						handler.post(posterExecutor);
 					}
 				};
@@ -126,11 +124,10 @@ public class MovieDetailsActivity extends Activity {
 		if (currentMovie != null) {
 			title.setText(currentMovie.getTitle());
 			year.setText(String.valueOf(currentMovie.getProductionYear()));
-			director.setText("Nndirector");
-			cast.setText("Some stars");
+			director.setText(currentMovie.getDirector());
+			cast.setText(currentMovie.getActors());
 			rating.setText(currentMovie.getRating());
-			Log.i("MovieDetailsActivity", currentMovie.getSynopsis());
-			description.setText(currentMovie.getSynopsis());
+			description.setText(currentMovie.getPlot());
 		}
 		if (bitmapResult != null) {
 			Log.i("MovieDetailsActivity", "Displayin");

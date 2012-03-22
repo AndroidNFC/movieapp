@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidnfc.movieapp.models.SearchResultMovie;
+import androidnfc.movieapp.parsers.ImdbJSONParser;
 
 public class SearchActivity extends Activity {
 
@@ -33,13 +34,14 @@ public class SearchActivity extends Activity {
 	private Button openBrowserButton;
 	private Button openMapButton;
 	private Button openVideoButton;
+	private LinearLayout resultLayout;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
-
+		resultLayout = (LinearLayout) findViewById(R.id.resultLayout);
 		// TODO Glue for back-button. This should be integrated in some
 		// TopPanelView-widget or so
 		{
@@ -61,35 +63,48 @@ public class SearchActivity extends Activity {
 			}
 		});
 
-		List<SearchResultMovie> imaginaryResults = new ArrayList<SearchResultMovie>();
-		for (int i = 0; i < 10; i++) {
-			imaginaryResults.add(createFooMovie(i));
-		}
-		setSearchResults(imaginaryResults);
+//		List<SearchResultMovie> imaginaryResults = new ArrayList<SearchResultMovie>();
+//		for (int i = 0; i < 10; i++) {
+//			imaginaryResults.add(createFooMovie(i));
+//		}
+//		setSearchResults(imaginaryResults);
 	}
 
 	private void search(String text) {
 		Log.d("search", "Searching for " + text);
+		//TODO: Cache stuff
+		List<SearchResultMovie> results = ImdbJSONParser.create().search(text);
+		if (results.size() > 0) {
+			setSearchResults(results);
+		} else {
+			resultLayout.removeAllViewsInLayout();
+			TextView resultText = new TextView(getApplicationContext());
+
+			resultText.setText("No results for "+text);
+			resultLayout.addView(resultText);
+		}
+		
+		
 	}
 
 	private void setSearchResults(List<SearchResultMovie> results) {
-		LinearLayout layout = (LinearLayout) findViewById(R.id.resultLayout);
-		layout.removeAllViewsInLayout();
+		
+		resultLayout.removeAllViewsInLayout();
 		TextView resultText = new TextView(getApplicationContext());
 
 		resultText.setText("Results");
-		layout.addView(resultText);
+		resultLayout.addView(resultText);
 
 		// TODO: Fix this line, doesn't show up for some reason. Also Can't set
 		// dynamic styles yet, so create a line with hardcoded content
 		View line = new View(getApplicationContext());
 		line.setBackgroundColor(0x515151);
-		layout.addView(line, new ViewGroup.LayoutParams(
+		resultLayout.addView(line, new ViewGroup.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, 2));
 
 		if (results.size() > 0) {
 			ListView list = new ListView(getApplicationContext());
-			layout.addView(list);
+			resultLayout.addView(list);
 
 			final SearchResultMovie[] res = new SearchResultMovie[results
 					.size()];
