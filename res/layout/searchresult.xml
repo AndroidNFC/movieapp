@@ -11,8 +11,8 @@
         android:layout_height="match_parent" />
 
      <TextView
-        android:id="@+id/resultYear"
-         style="@style/SearchResultYear"
+        android:id="@+id/resultDescription"
+
         android:layout_width="fill_parent"
         android:layout_height="match_parent" />
 

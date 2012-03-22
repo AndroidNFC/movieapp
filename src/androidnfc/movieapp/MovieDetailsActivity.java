@@ -90,7 +90,7 @@ public class MovieDetailsActivity extends Activity {
 			if (o1 == null || o2 == null) {
 				return;
 			}
-			final int imdbId = (Integer) o1;
+			final String imdbId = o1.toString();
 			final int finnkinoId = (Integer) o2;
 			try {
 				// Load stuff async

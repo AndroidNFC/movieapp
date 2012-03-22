@@ -136,9 +136,9 @@ public class SearchActivity extends Activity {
 			View rowView = inflater.inflate(R.layout.searchresult, parent,
 					false);
 			TextView name = (TextView) rowView.findViewById(R.id.resultName);
-			TextView year = (TextView) rowView.findViewById(R.id.resultYear);
+			TextView desc = (TextView) rowView.findViewById(R.id.resultDescription);
 			name.setText(values[position].getTitle());
-			year.setText(String.valueOf(values[position].getProductionYear()));
+			desc.setText(String.valueOf(values[position].getDescription()));
 			return rowView;
 		}
 	}
@@ -148,10 +148,10 @@ public class SearchActivity extends Activity {
 	 */
 	private SearchResultMovie createFooMovie(int i) {
 		SearchResultMovie r = new SearchResultMovie();
-		r.setImdbId(i);
+		r.setImdbId("tt1306980");
 		r.setFinnkinoId(298876);
 		r.setTitle("Top Gun " + i);
-		r.setProductionYear(1986 + 2 * i);
+		r.setDescription(1986 + 2 * i + ", Tom Cruise..");
 		return r;
 	}
 }

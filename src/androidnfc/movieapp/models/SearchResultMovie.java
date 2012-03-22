@@ -2,11 +2,10 @@ package androidnfc.movieapp.models;
 
 public class SearchResultMovie {
 
-	private int imdbId;
+	private String imdbId;
 	private int finnkinoId;
 	private String title;
-	private String originalTitle;
-	private int productionYear;
+	private String description;
 
 	public SearchResultMovie() {
 		this.title = "unnamed";
@@ -20,35 +19,19 @@ public class SearchResultMovie {
 		this.title = title;
 	}
 
-	public String getOriginalTitle() {
-		return originalTitle;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setOriginalTitle(String originalTitle) {
-		this.originalTitle = originalTitle;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public int getProductionYear() {
-		return productionYear;
-	}
-
-	public void setProductionYear(int productionYear) {
-		this.productionYear = productionYear;
-	}
-
-	public String toString() {
-
-		return "Title: " + this.title + "\n" + "Original Title: "
-				+ this.originalTitle + "\n" + "Production Year: "
-				+ this.productionYear + "\n";
-
-	}
-
-	public int getImdbId() {
+	public String getImdbId() {
 		return imdbId;
 	}
 
-	public void setImdbId(int imdbId) {
+	public void setImdbId(String imdbId) {
 		this.imdbId = imdbId;
 	}
 
