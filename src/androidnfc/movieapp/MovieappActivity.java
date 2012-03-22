@@ -76,13 +76,12 @@ public class MovieappActivity extends Activity {
 
 	private final class openBrowserOnClickListener implements OnClickListener {
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			Intent it = new Intent();
 			it.setClass(MovieappActivity.this, WebDisplay.class);
 			startActivity(it);
 		}
 	}
-    
+     
     private final class inTheatersOnClickListener implements OnClickListener {
 		public void onClick(View v) {
 			Intent intent = new Intent(MovieappActivity.this,

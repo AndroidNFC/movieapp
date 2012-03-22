@@ -1,15 +1,22 @@
 package androidnfc.movieapp;
 
+import java.util.Currency;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import androidnfc.movieapp.common.ImageLoader;
 import androidnfc.movieapp.models.Movie;
 import androidnfc.movieapp.parsers.FinnkinoXMLParser;
 import androidnfc.movieapp.parsers.MovieHandler;
@@ -19,16 +26,34 @@ public class MovieDetailsActivity extends Activity {
 	private final String XML_PARSER_DEBUG_TAG = "XMLParserActivity";
 	public static final String EXTRAS_KEY_IMDB_ID = "IMDB_ID";
 	public static final String EXTRAS_KEY_FINNKINO_ID = "FINNKINO_ID";
-	private TextView tv;
+	private TextView title;
+	private TextView year;
+	private TextView director;
+	private TextView description;
+	private TextView rating;
+	private TextView cast;
+	private ImageView poster;
+	private Bitmap bitmapResult;
+	private Movie currentMovie;
+	final Handler handler = new Handler();
+	final Runnable posterExecutor = new Runnable() {
+		public void run() {
+			displayMovieDetails();
+		}
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// The activity is being created.
-
 		setContentView(R.layout.movie);
-		tv = (TextView) findViewById(R.id.movieText);
-		tv.setText("");
+
+		title = (TextView) findViewById(R.id.movie_title);
+		year = (TextView) findViewById(R.id.movie_year);
+		director = (TextView) findViewById(R.id.movie_director);
+		rating = (TextView) findViewById(R.id.movie_rating);
+		cast = (TextView) findViewById(R.id.movie_cast);
+		description = (TextView) findViewById(R.id.movie_description);
+		poster = (ImageView) findViewById(R.id.movie_poster);
 
 		// TODO Glue for Top panel. This should be integrated in some
 		// TopPanelView-widget or so
@@ -65,45 +90,52 @@ public class MovieDetailsActivity extends Activity {
 			if (o1 == null || o2 == null) {
 				return;
 			}
-			int imdbId = (Integer) o1;
-			int finnkinoId = (Integer) o2;
+			final int imdbId = (Integer) o1;
+			final int finnkinoId = (Integer) o2;
 			try {
-				tv.setText("");
-				List<Movie> movies = new FinnkinoXMLParser().parse(finnkinoId);
-				for (Movie movie : movies) {
-					tv.append(movie.toString());
-				}
+				// Load stuff async
+				// TODO: Add loading-indicator
+				Thread t = new Thread() {
+
+					public void run() {
+						List<Movie> movies = new FinnkinoXMLParser()
+								.parse(finnkinoId);
+						if (movies == null || movies.size() != 1) {
+							throw new UnsupportedOperationException();
+						}
+
+						currentMovie = movies.get(0);
+
+						// TODO: Add image cache
+						bitmapResult = ImageLoader.loadImage(currentMovie
+								.getImageURL());
+						handler.post(posterExecutor);
+					}
+				};
+				t.start();
+
 			} catch (Exception e) {
-				tv.setText("Error: " + e.getMessage());
+
 				Log.e(XML_PARSER_DEBUG_TAG, "XML Parser Error", e);
 			}
 		}
 
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		// The activity has become visible (it is now "resumed").
-	}
+	private void displayMovieDetails() {
+		if (currentMovie != null) {
+			title.setText(currentMovie.getTitle());
+			year.setText(String.valueOf(currentMovie.getProductionYear()));
+			director.setText("Nndirector");
+			cast.setText("Some stars");
+			rating.setText(currentMovie.getRating());
+			Log.i("MovieDetailsActivity", currentMovie.getSynopsis());
+			description.setText(currentMovie.getSynopsis());
+		}
+		if (bitmapResult != null) {
+			Log.i("MovieDetailsActivity", "Displayin");
+			poster.setImageBitmap(bitmapResult);
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		// Another activity is taking focus (this activity is about to be
-		// "paused").
+		}
 	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		// The activity is no longer visible (it is now "stopped")
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		// The activity is about to be destroyed.
-	}
-
 }
