@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -85,6 +88,45 @@ public class SearchActivity extends Activity {
 			resultLayout.addView(resultText);
 		}
 
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater inflater = getMenuInflater(); 
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case R.id.showTrailer:
+	        	showTrailer();
+	            return true;
+	        case R.id.help:
+	        	showHelp();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+
+	private void showHelp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void showTrailer() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void setSearchResults(List<SearchResultMovie> results) {

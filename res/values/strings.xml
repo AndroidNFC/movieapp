@@ -11,5 +11,7 @@
 	<string name="inTheaters">In theaters</string>
 	<string name="movieDetails">Movie details</string>
 	<string name="fetchingXML">Fetching XML</string>
+	<string name="video">trailer</string>
+	<string name="help">help</string>
 	
 </resources>
