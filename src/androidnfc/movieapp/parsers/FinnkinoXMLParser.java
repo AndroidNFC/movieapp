@@ -9,14 +9,17 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import android.util.Log;
 import androidnfc.movieapp.models.Movie;
 
 public class FinnkinoXMLParser {
 
-	public List<Movie> parse(int id) {
+	private final String FINNKINO_XML_PARSER_DEBUG_TAG = "MovieEventHandler";
+	
+	public List<Movie> parse(int eventID) {
 		URL url;
 		try {
-			url = new URL("http://www.finnkino.fi/xml/Events/?eventID="+id);
+			url = new URL("http://www.finnkino.fi/xml/Events/?eventID=" + eventID);
 
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			SAXParser parser = spf.newSAXParser();
@@ -29,9 +32,11 @@ public class FinnkinoXMLParser {
 			List<Movie> movieList = handler.getParsedMovies();
 
 			return movieList;
+			
 		} catch (Exception e) {
-			// TODO HAndle exceptions
-			e.printStackTrace();
+			
+			Log.e(FINNKINO_XML_PARSER_DEBUG_TAG, "Failed to parse event.", e);
+			
 		}
 		return null;
 	}

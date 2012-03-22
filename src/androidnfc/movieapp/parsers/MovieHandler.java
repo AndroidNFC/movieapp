@@ -22,6 +22,13 @@ public class MovieHandler extends DefaultHandler {
 
 	private static final String[] EMPTY_ARRAY = new String[0];
 
+	public MovieHandler() {
+
+		this.showList = new LinkedList<Show>();
+		this.movieList = new LinkedList<Movie>();
+
+	}
+
 	/*
 	 * Returns a list of parsed movies with duplicates removed.
 	 */
@@ -81,12 +88,12 @@ public class MovieHandler extends DefaultHandler {
 	@Override
 	public void characters(char[] ch, int start, int length) {
 		if (tempValue != null) {
-			
+
 			tempValue += new String(ch, start, length);
 		} else {
 			tempValue = new String(ch, start, length);
 		}
-		
+
 	}
 
 	@Override
