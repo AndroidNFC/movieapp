@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidnfc.movieapp.common.ImageLoader;
@@ -37,6 +39,9 @@ public class MovieDetailsActivity extends Activity {
 	private ImageView poster;
 	private Bitmap bitmapResult;
 	private ImdbMovie currentMovie;
+	private ScrollView resultsLayout;
+	private ProgressBar spinner;
+
 	final Handler handler = new Handler();
 	final Runnable posterExecutor = new Runnable() {
 		public void run() {
@@ -56,7 +61,10 @@ public class MovieDetailsActivity extends Activity {
 		cast = (TextView) findViewById(R.id.movie_cast);
 		description = (TextView) findViewById(R.id.movie_description);
 		poster = (ImageView) findViewById(R.id.movie_poster);
-
+		resultsLayout = (ScrollView) findViewById(R.id.movie_results);
+		spinner = (ProgressBar) findViewById(R.id.movie_loading);
+		
+	
 		// TODO Glue for Top panel. This should be integrated in some
 		// TopPanelView-widget or so
 		{
@@ -83,6 +91,7 @@ public class MovieDetailsActivity extends Activity {
 	protected void onStart() {
 
 		super.onStart();
+		
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
 		if (extras != null) {
@@ -95,7 +104,8 @@ public class MovieDetailsActivity extends Activity {
 			final String imdbId = o1.toString();
 			try {
 				// Load stuff async
-				// TODO: Add loading-indicator
+				spinner.setVisibility(View.VISIBLE);
+				resultsLayout.setVisibility(View.INVISIBLE);
 				Thread t = new Thread() {
 
 					public void run() {
@@ -121,6 +131,8 @@ public class MovieDetailsActivity extends Activity {
 	}
 
 	private void displayMovieDetails() {
+		spinner.setVisibility(View.INVISIBLE);
+		resultsLayout.setVisibility(View.VISIBLE);
 		if (currentMovie != null) {
 			title.setText(currentMovie.getTitle());
 			year.setText(String.valueOf(currentMovie.getProductionYear()));
@@ -132,7 +144,6 @@ public class MovieDetailsActivity extends Activity {
 		if (bitmapResult != null) {
 			Log.i("MovieDetailsActivity", "Displayin");
 			poster.setImageBitmap(bitmapResult);
-
 		}
 	}
 }

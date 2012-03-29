@@ -5,12 +5,14 @@
     android:orientation="vertical" >
 
     <include
-    android:id="@+id/topbar"
-    layout="@layout/topbar" />
+        android:id="@+id/topbar"
+        layout="@layout/topbar" />
 
     <ScrollView
+        android:id="@+id/movie_results"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        style="@style/ContentLayout"
         android:layout_marginTop="5dip" >
 
         <LinearLayout
@@ -87,9 +89,11 @@
                 <ImageView
                     android:id="@+id/movie_poster"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                  
+                    android:layout_height="150dip"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="1dip"
                     android:text="Poster" />
+
             </LinearLayout>
 
             <TextView
@@ -106,5 +110,12 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/movie_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dip" />
 
 </LinearLayout>

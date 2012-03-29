@@ -30,6 +30,7 @@
                 android:id="@+id/searchfield"
                 android:layout_width="266dp"
                 android:layout_height="wrap_content" 
+                android:singleLine="true"
                 android:hint="Movie name" >
 
                 <requestFocus />
@@ -40,7 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/search"
-                android:layout_marginTop="5dip" />
+                android:layout_marginTop="5dip"
+                 />
         </LinearLayout>
     </LinearLayout>
 
@@ -50,8 +52,13 @@
         android:layout_height="wrap_content"
         style="@style/ContentLayout"
         android:orientation="vertical" >
-
     </LinearLayout>
-	
+
+    <ProgressBar
+        android:id="@+id/searchProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:layout_gravity="center" />
      
 </LinearLayout>

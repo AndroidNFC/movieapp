@@ -45,7 +45,7 @@
     </style>
 
     <style name="ContentLayout">
-        <item name="android:padding">5dip</item>
+        <item name="android:padding">8dip</item>
     </style>
 
     <style name="searchfield">

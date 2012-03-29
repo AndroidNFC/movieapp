@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.opengl.Visibility;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebSettings.PluginState;
@@ -28,8 +31,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidnfc.movieapp.common.ImageLoader;
+import androidnfc.movieapp.models.ImdbMovie;
 import androidnfc.movieapp.models.SearchResultMovie;
 import androidnfc.movieapp.parsers.ImdbJSONParser;
 
@@ -41,13 +47,27 @@ public class SearchActivity extends Activity {
 	private Button openMapButton;
 	private Button openVideoButton;
 	private LinearLayout resultLayout;
+	private ProgressBar spinner;
 	public static String trailerID = ""; 
+	private List<SearchResultMovie> results;
+
+	final Handler handler = new Handler();
+	final Runnable executor = new Runnable() {
+		public void run() {
+			setSearchResults();
+		}
+	};
+
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
 		resultLayout = (LinearLayout) findViewById(R.id.resultLayout);
+		spinner = (ProgressBar) findViewById(R.id.searchProgressBar);
+		spinner.setVisibility(View.INVISIBLE);
+		resultLayout.setVisibility(View.INVISIBLE);
 		// TODO Glue for back-button. This should be integrated in some
 		// TopPanelView-widget or so
 		{
@@ -68,36 +88,40 @@ public class SearchActivity extends Activity {
 				search(text);
 			}
 		});
-
-		// List<SearchResultMovie> imaginaryResults = new
-		// ArrayList<SearchResultMovie>();
-		// for (int i = 0; i < 10; i++) {
-		// imaginaryResults.add(createFooMovie(i));
-		// }
-		// setSearchResults(imaginaryResults);
 	}
 
-	private void search(String text) {
+	private void search(final String text) {
+		
 		Log.d("search", "Searching for " + text);
 		if (text.isEmpty()) {
 			return;
 		}
-		// TODO: Cache stuff
-		List<SearchResultMovie> results = ImdbJSONParser.create().search(text);
-		if (results.size() > 0) {
-			setSearchResults(results);
-		} else {
-			resultLayout.removeAllViewsInLayout();
-			TextView resultText = new TextView(getApplicationContext());
-
-			resultText.setText("No results for " + text);
-			resultLayout.addView(resultText);
-		}
+		spinner.setVisibility(View.VISIBLE);
+		resultLayout.setVisibility(View.INVISIBLE);
+		Thread t = new Thread() {
+			public void run() {
+				List<SearchResultMovie> t = ImdbJSONParser.create().search(text);
+				results = t;
+				
+				handler.post(executor);
+			}
+		};
+		t.start();
 
 	}
 
-	private void setSearchResults(List<SearchResultMovie> results) {
+	private void setSearchResults() {
+		spinner.setVisibility(View.INVISIBLE);
+		resultLayout.setVisibility(View.VISIBLE);
+		if (results == null || results.size() == 0)  {
+			resultLayout.removeAllViewsInLayout();
+			TextView resultText = new TextView(getApplicationContext());
 
+			resultText.setText("No results");
+			resultLayout.addView(resultText);
+			return;
+		}
+		
 		resultLayout.removeAllViewsInLayout();
 		TextView resultText = new TextView(getApplicationContext());
 
@@ -106,10 +130,11 @@ public class SearchActivity extends Activity {
 
 		// TODO: Fix this line, doesn't show up for some reason. Also Can't set
 		// dynamic styles yet, so create a line with hardcoded content
-		View line = new View(getApplicationContext());
-		line.setBackgroundColor(0x515151);
-		resultLayout.addView(line, new ViewGroup.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, 2));
+		LinearLayout line = new LinearLayout(getApplicationContext());
+		line.setBackgroundColor(0xFFFFFF);
+		LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 11);
+		line.setLayoutParams(params);
+		resultLayout.addView(line);
 
 		ListView list = new ListView(getApplicationContext());
 		resultLayout.addView(list);
@@ -134,7 +159,7 @@ public class SearchActivity extends Activity {
 				SearchActivity.this.startActivity(intent);
 			}
 		});
-
+		
 	}
 
 	public class ResultArrayAdapter extends ArrayAdapter<SearchResultMovie> {
