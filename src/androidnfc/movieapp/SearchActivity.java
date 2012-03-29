@@ -66,8 +66,8 @@ public class SearchActivity extends Activity {
 		setContentView(R.layout.search);
 		resultLayout = (LinearLayout) findViewById(R.id.resultLayout);
 		spinner = (ProgressBar) findViewById(R.id.searchProgressBar);
-		spinner.setVisibility(View.INVISIBLE);
-		resultLayout.setVisibility(View.INVISIBLE);
+		spinner.setVisibility(View.GONE);
+		resultLayout.setVisibility(View.GONE);
 		// TODO Glue for back-button. This should be integrated in some
 		// TopPanelView-widget or so
 		{
@@ -97,7 +97,7 @@ public class SearchActivity extends Activity {
 			return;
 		}
 		spinner.setVisibility(View.VISIBLE);
-		resultLayout.setVisibility(View.INVISIBLE);
+		resultLayout.setVisibility(View.GONE);
 		Thread t = new Thread() {
 			public void run() {
 				List<SearchResultMovie> t = ImdbJSONParser.create().search(text);
@@ -111,7 +111,7 @@ public class SearchActivity extends Activity {
 	}
 
 	private void setSearchResults() {
-		spinner.setVisibility(View.INVISIBLE);
+		spinner.setVisibility(View.GONE);
 		resultLayout.setVisibility(View.VISIBLE);
 		if (results == null || results.size() == 0)  {
 			resultLayout.removeAllViewsInLayout();

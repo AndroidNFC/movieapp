@@ -105,7 +105,7 @@ public class MovieDetailsActivity extends Activity {
 			try {
 				// Load stuff async
 				spinner.setVisibility(View.VISIBLE);
-				resultsLayout.setVisibility(View.INVISIBLE);
+				resultsLayout.setVisibility(View.GONE);
 				Thread t = new Thread() {
 
 					public void run() {
@@ -131,7 +131,7 @@ public class MovieDetailsActivity extends Activity {
 	}
 
 	private void displayMovieDetails() {
-		spinner.setVisibility(View.INVISIBLE);
+		spinner.setVisibility(View.GONE);
 		resultsLayout.setVisibility(View.VISIBLE);
 		if (currentMovie != null) {
 			title.setText(currentMovie.getTitle());
