@@ -1,30 +1,22 @@
 package androidnfc.movieapp.parsers;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
 import android.util.Log;
 import androidnfc.movieapp.models.ImdbMovie;
-import androidnfc.movieapp.models.Movie;
 import androidnfc.movieapp.models.SearchResultMovie;
 
 public class ImdbJSONParser {
@@ -37,6 +29,12 @@ public class ImdbJSONParser {
 		return new ImdbJSONParser();
 	}
 	public List<SearchResultMovie> search(String text){
+		try {
+			text = URLEncoder.encode(text, "utf-8");
+		} catch (Exception e) {
+			Log.e(DEBUG_TAG, "Error in url-encoding "+text);
+		}
+		
 		String json = getHttpJsonResponse(SEARCH_API_URL+text);
 		List<SearchResultMovie> result = new ArrayList<SearchResultMovie>();
 		try {
@@ -108,9 +106,11 @@ public class ImdbJSONParser {
 	
 	private String getHttpJsonResponse(String url) {
 		StringBuilder builder = new StringBuilder();
-		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(url);
 		try {
+			
+			
+			HttpClient client = new DefaultHttpClient();
+			HttpGet httpGet = new HttpGet(url);
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();

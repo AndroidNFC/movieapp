@@ -79,6 +79,9 @@ public class SearchActivity extends Activity {
 
 	private void search(String text) {
 		Log.d("search", "Searching for " + text);
+		if (text.isEmpty()) {
+			return;
+		}
 		// TODO: Cache stuff
 		List<SearchResultMovie> results = ImdbJSONParser.create().search(text);
 		if (results.size() > 0) {
@@ -91,78 +94,6 @@ public class SearchActivity extends Activity {
 			resultLayout.addView(resultText);
 		}
 
-	}
-
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-	 */
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// TODO Auto-generated method stub
-//		MenuInflater inflater = getMenuInflater(); 
-//		inflater.inflate(R.menu.menu, menu);
-//		return true;
-//	}
-
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//	    switch (item.getItemId()) {
-//	        case R.id.showTrailer:
-//	        	showTrailer();
-//	            return true;
-//	        case R.id.help:
-//	        	showHelp();
-//	            return true;
-//	        default:
-//	            return super.onOptionsItemSelected(item);
-//	    }
-//	}
-
-	private void showHelp() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void showTrailer() {
-		// TODO Auto-generated method stub
-		trailerID = "40472";
-		if (trailerID.compareTo("") != 0){
-			//TEST if adobe flash has been installed
-			PackageManager pm = getPackageManager();
-			List<ApplicationInfo> appList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-			if (appList.isEmpty()){
-				Toast.makeText(getApplicationContext(), "Error",
-					      Toast.LENGTH_SHORT).show();
-				return;
-			}else{
-				ApplicationInfo app = null;
-				Boolean installedFlag = false;
-				for (Iterator<ApplicationInfo> i = appList.iterator(); i.hasNext(); )
-					{
-					app = i.next();
-				    if (app.dataDir.contains("adobe") && app.dataDir.contains("flash")){
-				    	installedFlag = true;
-				    	break;
-				    	}
-				    }
-				if (installedFlag == false)
-					Toast.makeText(getApplicationContext(), "Please install Adobe Flash Player",
-									Toast.LENGTH_LONG).show();
-			}
-			//start web view
-			Intent it = new Intent();
-			it.setClass(SearchActivity.this, WebDisplay.class);
-			it.putExtra("trailerID", trailerID);
-			startActivity(it);
-		}else{
-			Toast.makeText(getApplicationContext(), "XML parser did not pass the trailer ID",
-				      Toast.LENGTH_SHORT).show();
-			return;
-		}
 	}
 
 	private void setSearchResults(List<SearchResultMovie> results) {
