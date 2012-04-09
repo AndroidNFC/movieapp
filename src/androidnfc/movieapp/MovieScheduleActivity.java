@@ -47,17 +47,7 @@ public class MovieScheduleActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.schedule);
-        
-        coverFlow = (CoverFlow) findViewById(R.id.schedule_coverflow);
-        movieTitleText = (TextView) findViewById(R.id.schedule_movietitle);
-        emptyCover = (ImageView) findViewById(R.id.schedule_emptycover);
-        
-        movieTitleText.setText("");
-        movieTitleText.setGravity(Gravity.CENTER_HORIZONTAL);
-        
-        FetchFinnkinoXMLTask myTask = new FetchFinnkinoXMLTask(this);
-        myTask.execute("http://www.finnkino.fi/xml/Schedule/");
+       
         
     }
 	

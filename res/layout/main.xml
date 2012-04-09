@@ -4,42 +4,51 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <include android:id="@+id/topbar" layout="@layout/topbar" />
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/topbar" />
 
-    <Button 
-		android:id="@+id/nfcTagButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/nfcTagbutton"/>
-	<Button 
-		android:id="@+id/xmlParserButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/xmlbutton" />
-	<Button 
-		android:id="@+id/openBrowserButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/browserbutton" />
-	<Button 
-		android:id="@+id/openMapButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/openMap" />
-	<Button 
-		android:id="@+id/openVideoButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/openVideo" />
-    <Button 
-        android:id="@+id/inTheatersButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        style="@style/ContentLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/inTheaters" />
-	<Button 
-        android:id="@+id/movieDetailsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/movieDetails" />
-	
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In Theaters" />
+
+        <ProgressBar
+            android:id="@+id/main_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dip" />
+
+        <androidnfc.movieapp.CoverFlow
+            android:id="@+id/main_coverflow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip" />
+
+        <TextView
+            android:id="@+id/main_movietitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:gravity="center_horizontal"
+            android:text="Title" />
+
+        <ImageView
+            android:id="@+id/main_emptycover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cover missing"
+            android:visibility="gone" />
+    </LinearLayout>
+
 </LinearLayout>

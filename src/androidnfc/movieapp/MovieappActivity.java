@@ -12,19 +12,16 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import android.widget.ImageView;
 
 public class MovieappActivity extends Activity {
 
-	private Button nfcTagButton;
-	private Button xmlParserButton;
-	private Button openBrowserButton;
-	private Button openMapButton;
-	private Button openVideoButton;
-	private Button inTheatersButton;
-	private Button movieDetailsButton;
+	private CoverFlow coverFlow;
+	private TextView movieTitleText;
+	private ImageView emptyCover;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -49,55 +46,14 @@ public class MovieappActivity extends Activity {
 			});
 		}
 
-        nfcTagButton = (Button)findViewById(R.id.nfcTagButton);
-        
-        xmlParserButton = (Button)findViewById(R.id.xmlParserButton);
-        xmlParserButton.setOnClickListener(new xmlParserOnClickListener());
-        
-        openBrowserButton = (Button)findViewById(R.id.openBrowserButton);
-        openBrowserButton.setOnClickListener(new openBrowserOnClickListener());
-        
-        inTheatersButton = (Button)findViewById(R.id.inTheatersButton);
-        inTheatersButton.setOnClickListener(new inTheatersOnClickListener());
+		coverFlow = (CoverFlow) findViewById(R.id.main_coverflow);
+		movieTitleText = (TextView) findViewById(R.id.main_movietitle);
+		emptyCover = (ImageView) findViewById(R.id.main_emptycover); 
 
-        movieDetailsButton = (Button)findViewById(R.id.movieDetailsButton);
-		movieDetailsButton.setOnClickListener(new movieDetailsOnClickListener());
+		movieTitleText.setText("");
+		movieTitleText.setGravity(Gravity.CENTER_HORIZONTAL);
+
+		MainCoverflowTask myTask = new MainCoverflowTask(this);
+		myTask.execute("http://www.finnkino.fi/xml/Schedule/");
 	}
-
-	private class movieDetailsOnClickListener implements OnClickListener {
-		public void onClick(View v) {
-			Intent intent = new Intent(MovieappActivity.this,
-					MovieDetailsActivity.class);
-			MovieappActivity.this.startActivity(intent);
-		}
-	}
-
-	private class xmlParserOnClickListener implements OnClickListener {
-		public void onClick(View v) {
-			Intent intent = new Intent(MovieappActivity.this,
-					XMLParserActivity.class);
-			MovieappActivity.this.startActivity(intent);
-		}
-	}
-
-	private final class openBrowserOnClickListener implements OnClickListener {
-		public void onClick(View v) {
-			//move to search activity
-//			Toast.makeText(getApplicationContext(), "move to search activity",
-//				      Toast.LENGTH_SHORT).show();
-			Intent it = new Intent();
-			it.setClass(MovieappActivity.this, WebDisplay.class);
-//			it.putExtra("trailerID", trailerID);
-			startActivity(it);
-		}
-	}
-     
-    private final class inTheatersOnClickListener implements OnClickListener {
-		public void onClick(View v) {
-			Intent intent = new Intent(MovieappActivity.this,
-									   MovieScheduleActivity.class);
-			MovieappActivity.this.startActivity(intent);
-		}
-    }
-
 }

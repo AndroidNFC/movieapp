@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+
     <androidnfc.movieapp.CoverFlow
         android:id="@+id/schedule_coverflow"
         android:layout_width="fill_parent"
@@ -23,5 +24,4 @@
         android:layout_height="wrap_content"
         android:text="Cover missing"
         android:visibility="gone" />
-
 </LinearLayout>
