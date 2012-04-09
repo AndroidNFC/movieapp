@@ -165,6 +165,7 @@ public class MovieDetailsActivity extends Activity {
 				intent = new Intent(MovieDetailsActivity.this, WebDisplay.class);
 				Log.d(XML_PARSER_DEBUG_TAG, "imdbID: " + currentMovie.getId());
 				intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, currentMovie.getId());
+				intent.putExtra(Constants.EXTRAS_KEY_MOVIE_TITLE, currentMovie.getTitle());
 				MovieDetailsActivity.this.startActivity(intent);
 	            return true;
 	        case R.id.imdb:
