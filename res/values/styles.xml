@@ -8,6 +8,10 @@
     <style name="h1" parent="android:style/TextAppearance.Large">
         <item name="android:textColor">#0099cc</item>
     </style>
+    
+   <style name="h2" parent="android:style/TextAppearance.Medium">
+        <item name="android:textColor">#a4a4a4</item>
+    </style>
 
     <style name="data" parent="android:style/TextAppearance.Small">
         <item name="android:textColor">#e4e4e4</item>
@@ -57,11 +61,18 @@
         <item name="android:layout_height">38dip</item>
         <item name="android:textColor">#e4e4e4</item>
         <item name="android:textSize">18dip</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="SearchResultYear">
+    <style name="SearchResultDescription">
         <item name="android:textColor">#a4a4a4</item>
     </style>
-
+	
+      <style name="ResultLayout_line">
+        <item name="android:background">#535353</item>
+        <item name="android:layout_height">2dip</item>
+    </style>
+     <style name="SearchResult_line">
+        <item name="android:background">#4a4a4a</item>
+        <item name="android:layout_height">1dip</item>
+    </style>
 </resources>

@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -15,7 +16,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import androidnfc.movieapp.models.ImdbMovie;
 import androidnfc.movieapp.models.SearchResultMovie;
 
@@ -46,7 +49,9 @@ public class ImdbJSONParser {
 						JSONObject o = popular.getJSONObject(i);
 						SearchResultMovie r = new SearchResultMovie();
 						r.setImdbId(o.getString("id"));
-						r.setDescription(o.getString("title_description"));
+						String desc = o.getString("title_description");
+						desc = TextUtils.join("", TextUtils.split(desc, "<[^>]*>"));
+						r.setDescription(desc);
 						r.setTitle(o.getString("title"));
 						result.add(r);
 					}

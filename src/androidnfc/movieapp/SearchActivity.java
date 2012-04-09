@@ -13,11 +13,14 @@ import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebSettings;
@@ -48,6 +51,7 @@ public class SearchActivity extends Activity {
 	private Button openVideoButton;
 	private LinearLayout resultLayout;
 	private ProgressBar spinner;
+	private ListView resultList;
 	public static String trailerID = ""; 
 	private List<SearchResultMovie> results;
 
@@ -58,6 +62,7 @@ public class SearchActivity extends Activity {
 		}
 	};
 
+
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -65,6 +70,7 @@ public class SearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
 		resultLayout = (LinearLayout) findViewById(R.id.resultLayout);
+		resultList = (ListView) findViewById(R.id.resultLayout_list);
 		spinner = (ProgressBar) findViewById(R.id.searchProgressBar);
 		spinner.setVisibility(View.GONE);
 		resultLayout.setVisibility(View.GONE);
@@ -86,6 +92,18 @@ public class SearchActivity extends Activity {
 			public void onClick(View v) {
 				String text = searchField.getText().toString();
 				search(text);
+			}
+		});
+		searchField.setOnKeyListener(new OnKeyListener() {
+			
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (KeyEvent.KEYCODE_ENTER == keyCode) {
+					String text = searchField.getText().toString();
+					search(text);
+					return true;
+				}
+			
+				return false;
 			}
 		});
 	}
@@ -114,37 +132,17 @@ public class SearchActivity extends Activity {
 		spinner.setVisibility(View.GONE);
 		resultLayout.setVisibility(View.VISIBLE);
 		if (results == null || results.size() == 0)  {
-			resultLayout.removeAllViewsInLayout();
-			TextView resultText = new TextView(getApplicationContext());
-
-			resultText.setText("No results");
-			resultLayout.addView(resultText);
+			resultList.setAdapter(null);
 			return;
 		}
 		
-		resultLayout.removeAllViewsInLayout();
-		TextView resultText = new TextView(getApplicationContext());
-
-		resultText.setText("Results");
-		resultLayout.addView(resultText);
-
-		// TODO: Fix this line, doesn't show up for some reason. Also Can't set
-		// dynamic styles yet, so create a line with hardcoded content
-		LinearLayout line = new LinearLayout(getApplicationContext());
-		line.setBackgroundColor(0xFFFFFF);
-		LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 11);
-		line.setLayoutParams(params);
-		resultLayout.addView(line);
-
-		ListView list = new ListView(getApplicationContext());
-		resultLayout.addView(list);
 
 		final SearchResultMovie[] res = new SearchResultMovie[results.size()];
 		ResultArrayAdapter adapter = new ResultArrayAdapter(
 				getApplicationContext(), results.toArray(res));
-		list.setAdapter(adapter);
+		resultList.setAdapter(adapter);
 
-		list.setOnItemClickListener(new OnItemClickListener() {
+		resultList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 

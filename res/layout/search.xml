@@ -4,7 +4,9 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <include android:id="@+id/topbar" layout="@layout/toplessbar" />
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/toplessbar" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -23,15 +25,15 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:layout_marginTop="10dip">
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip" >
+
             <EditText
                 android:id="@+id/searchfield"
                 android:layout_width="266dp"
-                android:layout_height="wrap_content" 
-                android:singleLine="true"
-                android:hint="Movie name" >
+                android:layout_height="wrap_content"
+                android:hint="Movie name"
+                android:singleLine="true" >
 
                 <requestFocus />
             </EditText>
@@ -40,25 +42,48 @@
                 android:id="@+id/searchButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/search"
                 android:layout_marginTop="5dip"
-                 />
+                android:src="@drawable/search" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/resultLayout"
+        style="@style/ContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ContentLayout"
         android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Results" />
+
+        <LinearLayout
+            android:id="@+id/resultLayout"
+            style="@style/ResultLayout_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:orientation="vertical" 
+            android:layout_marginBottom="5dip"/>
+        
+        <ListView 
+           android:id="@+id/resultLayout_list"
+           android:layout_width="match_parent"
+           android:layout_height="fill_parent"
+           >
+            
+           
+        </ListView>
     </LinearLayout>
-
+
     <ProgressBar
         android:id="@+id/searchProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dip"
-        android:layout_gravity="center" />
-     
+        android:layout_gravity="center"
+        android:layout_marginTop="20dip" />
+
 </LinearLayout>
