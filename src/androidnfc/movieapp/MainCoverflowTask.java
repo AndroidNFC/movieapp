@@ -28,7 +28,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import androidnfc.movieapp.models.Movie;
-import androidnfc.movieapp.parsers.MovieHandler;
+import androidnfc.movieapp.parsers.FinnkinoParser;
+import androidnfc.movieapp.parsers.FinnkinoHandler;
 
 public class MainCoverflowTask extends AsyncTask<String, Void, List<Movie>> {
 
@@ -64,25 +65,8 @@ public class MainCoverflowTask extends AsyncTask<String, Void, List<Movie>> {
         movieTitleText = (TextView) activity.findViewById(R.id.main_movietitle);
         emptyCover = (ImageView) activity.findViewById(R.id.main_emptycover);
 		
-        try {
-        	
-        	movies = new ArrayList<Movie>();
-        	URL url = new URL ("http://www.finnkino.fi/xml/Schedule/");
-		
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			SAXParser parser = spf.newSAXParser();
-			
-			XMLReader reader = parser.getXMLReader();
-			MovieHandler handler = new MovieHandler();
-			reader.setContentHandler(handler);
-			
-			reader.parse(new InputSource(url.openStream()));
-			this.movies = handler.getParsedMovies();
-			
-		} catch (Exception e) {
-			Log.e(FETCH_XML_TASK_DEBUG_TAG, "XML Parser Error", e);
-		}
-        
+        FinnkinoParser parser = new FinnkinoParser();
+        this.movies = parser.getUpcomingEvents();
         return this.movies;
 	}
 	
@@ -138,7 +122,7 @@ public class MainCoverflowTask extends AsyncTask<String, Void, List<Movie>> {
         
         movieTitleText.setText(movies.get(initialCoverPos).getTitle());
 		
-        // Remove progress
+        // Remove progress bar.
         progressBar.setVisibility(View.GONE);
 	}
 	

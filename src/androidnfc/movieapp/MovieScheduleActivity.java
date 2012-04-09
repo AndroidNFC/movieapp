@@ -33,7 +33,7 @@ import android.widget.TextView;
 import android.webkit.URLUtil;
 
 import androidnfc.movieapp.models.Movie;
-import androidnfc.movieapp.parsers.MovieHandler;
+import androidnfc.movieapp.parsers.FinnkinoHandler;
 
 public class MovieScheduleActivity extends Activity {
     

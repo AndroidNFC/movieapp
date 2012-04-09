@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,18 +21,18 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidnfc.movieapp.common.Constants;
 import androidnfc.movieapp.common.ImageLoader;
 import androidnfc.movieapp.models.ImdbMovie;
 import androidnfc.movieapp.models.Movie;
-import androidnfc.movieapp.parsers.FinnkinoXMLParser;
+import androidnfc.movieapp.parsers.FinnkinoParser;
 import androidnfc.movieapp.parsers.ImdbJSONParser;
-import androidnfc.movieapp.parsers.MovieHandler;
+import androidnfc.movieapp.parsers.FinnkinoHandler;
 
 public class MovieDetailsActivity extends Activity {
 
 	private final String XML_PARSER_DEBUG_TAG = "XMLParserActivity";
-	public static final String EXTRAS_KEY_IMDB_ID = "IMDB_ID";
-	public static final String EXTRAS_KEY_FINNKINO_ID = "FINNKINO_ID";
+
 	private TextView title;
 	private TextView year;
 	private TextView director;
@@ -95,8 +98,8 @@ public class MovieDetailsActivity extends Activity {
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
 		if (extras != null) {
-			Object o1 = extras.get(EXTRAS_KEY_IMDB_ID);
-			Object o2 = extras.get(EXTRAS_KEY_FINNKINO_ID);
+			Object o1 = extras.get(Constants.EXTRAS_KEY_IMDB_ID);
+			Object o2 = extras.get(Constants.EXTRAS_KEY_FINNKINO_ID);
 			// Just some glue here..
 			if (o1 == null || o2 == null) {
 				return;
@@ -146,4 +149,32 @@ public class MovieDetailsActivity extends Activity {
 			poster.setImageBitmap(bitmapResult);
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.movie_details_menu, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+	    switch (item.getItemId()) {
+	        case R.id.trailer:
+				intent = new Intent(MovieDetailsActivity.this, WebDisplay.class);
+				Log.d(XML_PARSER_DEBUG_TAG, "imdbID: " + currentMovie.getId());
+				intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, currentMovie.getId());
+				MovieDetailsActivity.this.startActivity(intent);
+	            return true;
+	        case R.id.imdb:
+				intent = new Intent(MovieDetailsActivity.this, WebDisplay.class);
+				intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, currentMovie.getId());
+				MovieDetailsActivity.this.startActivity(intent);
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	
 }

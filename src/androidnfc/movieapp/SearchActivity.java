@@ -37,6 +37,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidnfc.movieapp.common.Constants;
 import androidnfc.movieapp.common.ImageLoader;
 import androidnfc.movieapp.models.ImdbMovie;
 import androidnfc.movieapp.models.SearchResultMovie;
@@ -150,9 +151,9 @@ public class SearchActivity extends Activity {
 
 				Intent intent = new Intent(SearchActivity.this,
 						MovieDetailsActivity.class);
-				intent.putExtra(MovieDetailsActivity.EXTRAS_KEY_IMDB_ID,
+				intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID,
 						model.getImdbId());
-				intent.putExtra(MovieDetailsActivity.EXTRAS_KEY_FINNKINO_ID,
+				intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID,
 						model.getFinnkinoId());
 				SearchActivity.this.startActivity(intent);
 			}

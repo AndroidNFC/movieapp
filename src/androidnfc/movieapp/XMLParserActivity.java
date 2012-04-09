@@ -16,7 +16,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidnfc.movieapp.models.Movie;
-import androidnfc.movieapp.parsers.MovieHandler;
+import androidnfc.movieapp.parsers.FinnkinoHandler;
 
 public class XMLParserActivity extends Activity {
 	
@@ -38,7 +38,7 @@ public class XMLParserActivity extends Activity {
 			SAXParser parser = spf.newSAXParser();
 			
 			XMLReader reader = parser.getXMLReader();
-			MovieHandler handler = new MovieHandler();
+			FinnkinoHandler handler = new FinnkinoHandler();
 			reader.setContentHandler(handler);
 			
 			reader.parse(new InputSource(url.openStream()));
