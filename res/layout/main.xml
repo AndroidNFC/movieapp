@@ -33,16 +33,16 @@
             android:id="@+id/main_coverflow"
             style="android:galleryItemBackground"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dip"
             android:layout_marginTop="10dip"
             android:background="#000000"
             android:spacing="10dip" />
-
+
         <TextView
             android:id="@+id/main_movietitle"
             style="@style/h3"
             android:layout_width="fill_parent"
-            android:layout_height="55dip"
+            android:layout_height="50dip"
             android:layout_marginTop="20dip"
             android:gravity="center_horizontal"
             android:text="" />

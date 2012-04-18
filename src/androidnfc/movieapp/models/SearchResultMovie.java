@@ -1,5 +1,7 @@
 package androidnfc.movieapp.models;
 
+import java.util.List;
+
 public class SearchResultMovie {
 
 	private String imdbId;
@@ -7,6 +9,7 @@ public class SearchResultMovie {
 	private String title;
 	private String description;
 	private String imageUrl;
+	private List<Show> shows;
 
 	public SearchResultMovie() {
 		this.title = "unnamed";
@@ -50,6 +53,14 @@ public class SearchResultMovie {
 
 	public void setImageURL(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public List<Show> getShows() {
+		return shows;
+	}
+
+	public void setShows(List<Show> shows) {
+		this.shows = shows;
 	}
 
 }

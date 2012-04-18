@@ -12,6 +12,7 @@ import org.xml.sax.XMLReader;
 
 import android.util.Log;
 import androidnfc.movieapp.models.Movie;
+import androidnfc.movieapp.models.Show;
 
 public class FinnkinoParser {
 
@@ -31,7 +32,8 @@ public class FinnkinoParser {
 
 			reader.parse(new InputSource(url.openStream()));
 			List<Movie> movieList = handler.getParsedMovies();
-
+			
+			
 			return movieList;
 			
 		} catch (Exception e) {
@@ -45,7 +47,6 @@ public class FinnkinoParser {
 	public List<Movie> getUpcomingEvents() {
 		
 		List<Movie> movieList = new ArrayList<Movie>();
-		
         try {
         	
         	URL url = new URL ("http://www.finnkino.fi/xml/Schedule/");
@@ -59,7 +60,6 @@ public class FinnkinoParser {
 			
 			reader.parse(new InputSource(url.openStream()));
 			movieList = handler.getParsedMovies();
-			
 		} catch (Exception e) {
 			Log.e(FINNKINO_PARSER_DEBUG_TAG, "XML Parser Error", e);
 		}

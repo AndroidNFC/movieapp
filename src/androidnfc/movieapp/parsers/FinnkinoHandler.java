@@ -105,21 +105,20 @@ public class FinnkinoHandler extends DefaultHandler {
 
 		} else if (qName.equals("Show")) {
 
-			tempShow.setMovie(tempMovie);
 			this.showList.add(tempShow);
-
+			tempMovie.getShows().add(tempShow);
 			boolean movieIsDuplicate = false;
 			for (Movie movie : this.movieList) {
 				if (movie.getEventID() == tempMovie.getEventID()) {
+					movie.getShows().add(tempShow);
 					movieIsDuplicate = true;
-					Log.d(MOVIE_EVENT_DEBUG_TAG, "Duplicate Found.");
 					break;
 				}
 			}
 			if (!movieIsDuplicate) {
 				this.movieList.add(tempMovie);
 			}
-
+			
 		} else if (qName.equals("EventID")) {
 
 			this.tempMovie.setEventID(Integer.parseInt(tempValue));
@@ -217,8 +216,7 @@ public class FinnkinoHandler extends DefaultHandler {
 			this.tempShow.setTheater(tempValue);
 
 		} else if (qName.equals("TheatreAuditorium")) {
-
-			this.tempShow.setTheaterHall(tempValue);
+			this.tempShow.setTheaterHall(tempValue.substring(5));
 
 		} else if (qName.equals("PresentationMethodAndLanguage")) {
 

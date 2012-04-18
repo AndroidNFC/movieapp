@@ -5,14 +5,14 @@
     android:orientation="vertical" >
 
     <include
-        android:id="@+id/topbar"
-        layout="@layout/topbar" />
+    android:id="@+id/topbar"
+    layout="@layout/topbar" />
 
     <ScrollView
         android:id="@+id/movie_results"
+        style="@style/ContentLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        style="@style/ContentLayout"
         android:layout_marginTop="5dip" >
 
         <LinearLayout
@@ -93,7 +93,20 @@
                     android:layout_gravity="top"
                     android:layout_marginTop="1dip"
                     android:text="Poster" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/movie_schedule_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/movie_shows"
+                    style="@style/legend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description" />
             </LinearLayout>
 
             <TextView

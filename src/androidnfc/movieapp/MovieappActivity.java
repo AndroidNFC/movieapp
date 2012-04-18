@@ -70,6 +70,7 @@ public class MovieappActivity extends Activity {
 				intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, selectedMovie.getImdbId());
 				intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID,
 						selectedMovie.getFinnkinoId());
+				intent.putExtra(Constants.EXTRAS_SHOWS, (Movie.SerializableShowList) selectedMovie.getShows());
 				startActivity(intent);
 			}
 		});

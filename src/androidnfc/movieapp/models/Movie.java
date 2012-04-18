@@ -1,5 +1,9 @@
 package androidnfc.movieapp.models;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Movie {
 
 	private int movieID;
@@ -19,6 +23,14 @@ public class Movie {
 	private String eventURL;
 	private String imageURL;
 	private String videoURL;
+	private final List<Show> shows = new SerializableShowList();
+	
+	public class SerializableShowList extends ArrayList<Show> implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+		
+	}
+
 	
 	public Movie() {
 		this.title = "unnamed";
@@ -189,6 +201,10 @@ public class Movie {
 			   "Genres: " + arrayToString(this.genres) + "\n" +
 			   "Synopsis: " + this.synopsis + "\n" +
 			   "Image URL: " + this.imageURL;
+	}
+
+	public List<Show> getShows() {
+		return this.shows ;
 	}
 
 }

@@ -1,8 +1,13 @@
 package androidnfc.movieapp.models;
 
-public class Show {
+import java.io.Serializable;
+import java.util.ArrayList;
 
-	private Movie movie;
+public class Show implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+
 	private String showStart;
 	private int theaterID;
 	private int hallID;
@@ -10,12 +15,6 @@ public class Show {
 	private String theaterHall;
 	private String presentationMethodAndLanguage;
 	
-	public Movie getMovie() {
-		return movie;
-	}
-	public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
 	public String getShowStart() {
 		return showStart;
 	}
@@ -53,13 +52,14 @@ public class Show {
 		this.theaterHall = hall;
 	}
 	
-	public String toString() {
+	/*public String toString() {
 		
 		return "Title: " + this.movie.getTitle() + "\n" +
 			   "Show start: " + this.getShowStart() + "\n" +
 			   "Theater: " + this.getTheater() + "\n" +
 			   "Hall: " + this.getTheaterHall();
 			   
-	}
-
+	}*/
+	
+	
 }
