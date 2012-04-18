@@ -2,9 +2,11 @@ package androidnfc.movieapp.parsers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
@@ -13,9 +15,11 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EncodingUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -40,6 +44,7 @@ public class ImdbJSONParser {
 		}
 
 		String json = getHttpJsonResponse(SEARCH_API_URL + text);
+		Log.i("MOVIEAPP", json);
 		List<SearchResultMovie> result = new ArrayList<SearchResultMovie>();
 		try {
 			if (json != null && json.length() > 2) {
@@ -83,7 +88,9 @@ public class ImdbJSONParser {
 			String desc = o.getString("title_description");
 			desc = TextUtils.join("", TextUtils.split(desc, "<[^>]*>"));
 			r.setDescription(desc);
-			r.setTitle(o.getString("title"));
+			String titleStr = o.getString("title");
+			
+			r.setTitle(Html.fromHtml(titleStr).toString());
 			return r;
 		} catch (Exception e) {
 			Log.e(DEBUG_TAG, "Error parsing object " + o);

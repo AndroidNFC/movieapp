@@ -7,7 +7,7 @@
     <include
         android:id="@+id/topbar"
         layout="@layout/topbar" />
-
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         style="@style/ContentLayout"
@@ -31,24 +31,35 @@
 
         <androidnfc.movieapp.CoverFlow
             android:id="@+id/main_coverflow"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip" />
-
-        <TextView
-            android:id="@+id/main_movietitle"
+            style="android:galleryItemBackground"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
+            android:background="#000000"
+            android:spacing="10dip" />
+
+        <TextView
+            android:id="@+id/main_movietitle"
+            style="@style/h3"
+            android:layout_width="fill_parent"
+            android:layout_height="55dip"
+            android:layout_marginTop="20dip"
             android:gravity="center_horizontal"
-            android:text="Title" />
+            android:text="" />
 
-        <ImageView
-            android:id="@+id/main_emptycover"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/select_movie"
+            android:layout_width="178dp"
             android:layout_height="wrap_content"
-            android:text="Cover missing"
-            android:visibility="gone" />
+            android:layout_gravity="center"
+            android:layout_marginTop="20dip"
+            android:text="Show details" />
     </LinearLayout>
-
+    
+ <ImageView
+                android:id="@+id/main_emptycover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:background="#6f6f6f" />
 </LinearLayout>

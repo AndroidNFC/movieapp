@@ -40,8 +40,11 @@ public class ImageAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		return images.get(position);
+		ImageView result = images.get(position);
+		result.setScaleType(ImageView.ScaleType.FIT_CENTER);
+		result.setPadding(10, 10, 10, 10);
+		 result.setBackgroundColor(0x000000);
+		return result;
 		
 	}
 	

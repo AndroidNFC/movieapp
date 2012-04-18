@@ -30,6 +30,7 @@ public class MovieappActivity extends Activity {
 	private ImageView emptyCover;
 	private SearchResultMovie selectedMovie;
 	private MainCoverflowTask coverflowTask;
+	private Button button;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -55,9 +56,23 @@ public class MovieappActivity extends Activity {
 		}
 
 		coverFlow = (CoverFlow) findViewById(R.id.main_coverflow);
+		coverFlow.setUnselectedAlpha(0.7f);
 		movieTitleText = (TextView) findViewById(R.id.main_movietitle);
 		emptyCover = (ImageView) findViewById(R.id.main_emptycover);
 
+		button = (Button) findViewById(R.id.select_movie);
+		button.setVisibility(View.GONE);
+		button.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				Intent intent = new Intent(MovieappActivity.this,
+						MovieDetailsActivity.class);
+				intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, selectedMovie.getImdbId());
+				intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID,
+						selectedMovie.getFinnkinoId());
+				startActivity(intent);
+			}
+		});
 		movieTitleText.setText("");
 		movieTitleText.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -67,23 +82,16 @@ public class MovieappActivity extends Activity {
 
 	private void setSelectedMovie(SearchResultMovie movie) {
 		this.selectedMovie = movie;
+		button.setVisibility(View.VISIBLE);
 		movieTitleText.setText(movie.getTitle());
-		
-		Intent intent = new Intent(MovieappActivity.this,
-				MovieDetailsActivity.class);
-		intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID,
-				movie.getImdbId());
-		intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID,
-				movie.getFinnkinoId());
-		this.startActivity(intent);
+
 	}
-	
-	
+
 	public final class CoverSelectedListener implements OnItemSelectedListener {
 
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
-			
+			coverFlow.setSelection(position);
 			SearchResultMovie movie = coverflowTask.getMovies().get(position);
 			setSelectedMovie(movie);
 		}
