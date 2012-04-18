@@ -27,48 +27,78 @@ public class ImdbJSONParser {
 	private final String DEBUG_TAG = "ImdbJSONParser";
 	private final String IMDBAPI_URL = "http://www.imdbapi.com/";
 	private final String SEARCH_API_URL = "http://www.imdb.com/xml/find?json=1&nr=1&tt=on&q=";
-	
+
 	public static ImdbJSONParser create() {
 		return new ImdbJSONParser();
 	}
-	public List<SearchResultMovie> search(String text){
+
+	public List<SearchResultMovie> search(String text) {
 		try {
 			text = URLEncoder.encode(text, "utf-8");
 		} catch (Exception e) {
-			Log.e(DEBUG_TAG, "Error in url-encoding "+text);
+			Log.e(DEBUG_TAG, "Error in url-encoding " + text);
 		}
-		
-		String json = getHttpJsonResponse(SEARCH_API_URL+text);
+
+		String json = getHttpJsonResponse(SEARCH_API_URL + text);
 		List<SearchResultMovie> result = new ArrayList<SearchResultMovie>();
 		try {
 			if (json != null && json.length() > 2) {
 				JSONObject a = new JSONObject(json);
-				JSONArray popular = a.getJSONArray("title_popular");
-				if (popular != null) {
-					for (int i=0; i < popular.length(); i++) {
+				if (a.has("title_popular")) {
+					JSONArray popular = a.getJSONArray("title_popular");
+					for (int i = 0; i < popular.length(); i++) {
 						JSONObject o = popular.getJSONObject(i);
-						SearchResultMovie r = new SearchResultMovie();
-						r.setImdbId(o.getString("id"));
-						String desc = o.getString("title_description");
-						desc = TextUtils.join("", TextUtils.split(desc, "<[^>]*>"));
-						r.setDescription(desc);
-						r.setTitle(o.getString("title"));
-						result.add(r);
+						result.add(jsonObjectToMovie(o));
 					}
+				}else if (a.has("title_exact")) {
+						JSONArray popular = a.getJSONArray("title_exact");
+						for (int i = 0; i < popular.length(); i++) {
+							JSONObject o = popular.getJSONObject(i);
+							result.add(jsonObjectToMovie(o));
+						}
+					
+				} else if (a.has("title_approx")) {
+					JSONArray approx = a.getJSONArray("title_approx");
+					for (int i = 0; (i < approx.length() && i < 3); i++) {
+						JSONObject o = approx.getJSONObject(i);
+						result.add(jsonObjectToMovie(o));
+					}
+				} else {
+					throw new UnsupportedOperationException("No movie found");
 				}
 			}
 		} catch (Exception e) {
-			Log.e(DEBUG_TAG, "Error searching "+text);
+			Log.e(DEBUG_TAG, "Error searching " + text);
+			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
-	
+
+	private SearchResultMovie jsonObjectToMovie(JSONObject o) {
+		try {
+			SearchResultMovie r = new SearchResultMovie();
+
+			r.setImdbId(o.getString("id"));
+			String desc = o.getString("title_description");
+			desc = TextUtils.join("", TextUtils.split(desc, "<[^>]*>"));
+			r.setDescription(desc);
+			r.setTitle(o.getString("title"));
+			return r;
+		} catch (Exception e) {
+			Log.e(DEBUG_TAG, "Error parsing object " + o);
+			return null;
+		}
+	}
+
 	public ImdbMovie fetchMovie(String id) {
 
-		try {		
-			String json = getHttpJsonResponse(IMDBAPI_URL+"?plot=full&i="+id);
-			if (json != null && json.length() > 2 && !json.contains("Incorrect IMDb ID") && !json.contains("Parse Error") ) {
+		try {
+			String json = getHttpJsonResponse(IMDBAPI_URL + "?plot=full&i="
+					+ id);
+			if (json != null && json.length() > 2
+					&& !json.contains("Incorrect IMDb ID")
+					&& !json.contains("Parse Error")) {
 				JSONObject o = new JSONObject(json);
 				ImdbMovie m = new ImdbMovie();
 				m.setActors(o.getString("Actors"));
@@ -92,28 +122,27 @@ public class ImdbJSONParser {
 					} catch (NumberFormatException e) {
 						// TODO: handle exception
 					}
-					
+
 				}
 				m.setWriter(o.getString("Writer"));
 				m.setTitle(o.getString("Title"));
 				return m;
 			} else {
-				Log.e(DEBUG_TAG, "Error in parsing "+id);
+				Log.e(DEBUG_TAG, "Error in parsing " + id);
 			}
 			return null;
 		} catch (Exception e) {
-			
-			Log.e(DEBUG_TAG, "Failed to parse "+id, e);
-			
+
+			Log.e(DEBUG_TAG, "Failed to parse " + id, e);
+
 		}
 		return null;
 	}
-	
+
 	private String getHttpJsonResponse(String url) {
 		StringBuilder builder = new StringBuilder();
 		try {
-			
-			
+
 			HttpClient client = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(url);
 			HttpResponse response = client.execute(httpGet);
@@ -134,7 +163,7 @@ public class ImdbJSONParser {
 		} catch (Exception e) {
 			Log.e(DEBUG_TAG, "Err!", e);
 			return null;
-		} 
+		}
 		return builder.toString();
 	}
 }

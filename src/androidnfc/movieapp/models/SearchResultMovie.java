@@ -6,6 +6,7 @@ public class SearchResultMovie {
 	private int finnkinoId;
 	private String title;
 	private String description;
+	private String imageUrl;
 
 	public SearchResultMovie() {
 		this.title = "unnamed";
@@ -41,6 +42,14 @@ public class SearchResultMovie {
 
 	public void setFinnkinoId(int finnkinoId) {
 		this.finnkinoId = finnkinoId;
+	}
+
+	public String getImageURL() {
+		return imageUrl;
+	}
+
+	public void setImageURL(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

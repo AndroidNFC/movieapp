@@ -51,7 +51,7 @@ public class WebDisplay extends Activity {
 		
         TrailerParser parser = new TrailerParser(displayWidth);
         //List<Trailer> trailers = parser.getTrailersByID(imdbID);
-        List<Trailer> trailers = parser.getTrailersByMovieTitle(movieTitle);
+        List<Trailer> trailers = parser.getTrailersByID(imdbID);
         
         if (trailers.size() > 0) {
         	
