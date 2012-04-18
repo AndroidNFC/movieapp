@@ -1,10 +1,14 @@
 package androidnfc.movieapp;
 
+import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebChromeClient;
@@ -22,7 +26,7 @@ import androidnfc.movieapp.parsers.FinnkinoParser;
 import androidnfc.movieapp.parsers.TrailerParser;
 
 public class WebDisplay extends Activity {
-	
+	public static String trailerID = ""; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -59,8 +63,10 @@ public class WebDisplay extends Activity {
     		//String trailerHTML = "<html><body>" + embedHTML + "</body></html>";
             //myWebView.loadData(trailerHTML, "text/html", null);
             
-    		String url = "http://www.traileraddict.com/player.swf?id=" + trailers.get(0).getTrailerID();
-            
+    		//String url = "http://www.traileraddict.com/player.swf?id=" + trailers.get(0).getTrailerID();
+    		trailerID = "" + trailers.get(0).getTrailerID();
+    		showTrailer();
+    		
         } else {
         	CharSequence text = "Trailers not found!";
         	int duration = Toast.LENGTH_SHORT;
@@ -70,6 +76,44 @@ public class WebDisplay extends Activity {
         
 
 	}
+	
+	private void showTrailer() {
+		//trailerID = "31833"; //for testing the trailer
+		if (trailerID.compareTo("") != 0){
+			//TEST if adobe flash has been installed
+			PackageManager pm = getPackageManager();
+			List<ApplicationInfo> appList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+			if (appList.isEmpty()){
+				Toast.makeText(getApplicationContext(), "Error",
+					      Toast.LENGTH_SHORT).show();
+				return;
+			}else{
+				ApplicationInfo app = null;
+				Boolean installedFlag = false;
+				for (Iterator<ApplicationInfo> i = appList.iterator(); i.hasNext(); )
+					{
+					app = i.next();
+				    if (app.dataDir.contains("adobe") && app.dataDir.contains("flash")){
+				    	installedFlag = true;
+				    	break;
+				    	}
+				    }
+				if (installedFlag == false)
+					Toast.makeText(getApplicationContext(), "Please install Adobe Flash Player",
+									Toast.LENGTH_LONG).show();
+			}
+			//start web view
+			String url = "http://www.traileraddict.com/player.swf?id=" + trailerID + "&e=y";
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			i.setData(Uri.parse(url));
+			startActivity(i);
+		}else{
+			Toast.makeText(getApplicationContext(), "XML parser did not pass the trailer ID",
+				      Toast.LENGTH_SHORT).show();
+			return;
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onPause()
 	 */
