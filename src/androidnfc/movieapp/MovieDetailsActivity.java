@@ -1,14 +1,21 @@
 package androidnfc.movieapp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -57,7 +65,9 @@ public class MovieDetailsActivity extends Activity {
 			displayMovieDetails();
 		}
 	};
-	private TextView showsText;
+	private LinearLayout scheduleRoot;
+	private LinearLayout scheduleData;
+	private TextView scheduleDate;
 
 
 
@@ -75,7 +85,9 @@ public class MovieDetailsActivity extends Activity {
 		poster = (ImageView) findViewById(R.id.movie_poster);
 		resultsLayout = (ScrollView) findViewById(R.id.movie_results);
 		spinner = (ProgressBar) findViewById(R.id.movie_loading);
-		showsText = (TextView) findViewById(R.id.movie_shows);
+		scheduleRoot = (LinearLayout) findViewById(R.id.movie_schedule_layout);
+		scheduleData = (LinearLayout) findViewById(R.id.movie_schedule_data_layout);
+		scheduleDate = (TextView) findViewById(R.id.movie_theater_date);
 	
 		// TODO Glue for Top panel. This should be integrated in some
 		// TopPanelView-widget or so
@@ -165,21 +177,76 @@ public class MovieDetailsActivity extends Activity {
 		}
 		
 		if (currentShows != null) {
+			scheduleData.removeAllViews();
 			if (currentShows instanceof List) {
+				
+				scheduleRoot.setVisibility(View.VISIBLE);
+				
 				List<Show> shows = (List<Show>) currentShows;
-				String showsText = "";
+				Map<String, Map<String, List<Date>>> map = new HashMap<String, Map<String,List<Date>>>();
+				Context c = this.getApplicationContext();
 				for (Show show : shows) {
 					try {
+						String d = show.getShowStart().split("T")[0];
+						
 						Date start = FINNKINO_DATE_FORMAT.parse(show.getShowStart());
-						String location = show.getTheater().trim()+ ", "+show.getTheaterHall().trim();
-						showsText += location + " - "+DATUM_FORMAT.format(start) + " "+TIME_FORMAT.format(start) + " \n";
+						String location = show.getTheater().trim()+ " "+show.getTheaterHall().trim();
+						if (!map.containsKey(d)) {
+							Map<String, List<Date>> dmap = new HashMap<String, List<Date>>();
+							map.put(d, dmap);
+						}
+						
+						Map<String, List<Date>> dmap = map.get(d);
+						List<Date> l;
+						if (dmap.containsKey(location)) {
+							l = dmap.get(location);
+						} else {
+							l = new ArrayList<Date>(3);
+							dmap.put(location, l);
+						}
+						l.add(start);
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
 				}
-				this.showsText.setText(showsText);
+				
+				
+				
+				for (String key : map.keySet()) {
+					Map<String, List<Date>> dmap = map.get(key);
+					for (String location : dmap.keySet()) {
+						
+						List<Date> l = dmap.get(location);
+						// TEMPORARY GLUE
+						{
+						scheduleDate.setText(DATUM_FORMAT.format(l.get(0)));
+						}
+						TextView description = new TextView(c);
+						description.setText(location+":");
+						description.setTextColor(Color.parseColor("#a4a4a4"));
+						description.setPadding(0, 5, 5, 2);
+						scheduleData.addView(description);
+						
+						int i = 0;
+						String dateString = "";
+						for (Date date : l) {
+							dateString += TIME_FORMAT.format(date);
+							if (i < l.size()-1) {
+								dateString += ", ";
+							}
+							i++;
+						}
+						TextView data = new TextView(c);
+						data.setText(dateString);
+						data.setTextColor(Color.parseColor("#ffffff"));
+						scheduleData.addView(data);
+					}
+				}
+				//this.showsText.setText(showsText);
 			}
 			Log.i("MovieDetailsActivity", "HASZ SHOWS! "+currentShows);
+		} else {
+			scheduleRoot.setVisibility(View.GONE);
 		}
 	}
 	

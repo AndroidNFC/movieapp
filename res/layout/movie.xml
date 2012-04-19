@@ -5,8 +5,8 @@
     android:orientation="vertical" >
 
     <include
-    android:id="@+id/topbar"
-    layout="@layout/topbar" />
+        android:id="@+id/topbar"
+        layout="@layout/topbar" />
 
     <ScrollView
         android:id="@+id/movie_results"
@@ -99,14 +99,70 @@
                 android:id="@+id/movie_schedule_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:paddingBottom="10dip" >
 
-                <TextView
-                    android:id="@+id/movie_shows"
-                    style="@style/legend"
-                    android:layout_width="wrap_content"
+                 <LinearLayout
+                    android:id="@+id/movie_schedule_title_layout"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Description" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dip" >
+                    
+                     <TextView
+                         android:id="@+id/movie_theater_title"
+                         style="@style/legend"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="0.8"
+                         android:text="Theater schedule:" />
+                     
+                      <TextView
+                          android:id="@+id/movie_theater_date"
+                          style="@style/data"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="0.17"
+                          android:gravity="right"
+                          android:text="XXX yyyy-MM-dd" />
+
+                 </LinearLayout>
+                
+                <LinearLayout
+                    android:id="@+id/movie_schedule_wrapper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dip" >
+
+                    <LinearLayout
+                        android:id="@+id/movie_schedule_data_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:orientation="vertical" >
+
+                        <!-- <TextView -->
+                        <!-- style="@style/legend" -->
+                        <!-- android:layout_width="wrap_content" -->
+                        <!-- android:layout_height="wrap_content" -->
+                        <!-- android:text="Description" /> -->
+
+
+                        <!-- <TextView -->
+                        <!-- android:layout_width="wrap_content" -->
+                        <!-- android:layout_height="wrap_content" -->
+                        <!-- android:text="Data" /> -->
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/tickets_image"
+                        android:layout_width="100dip"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:src="@drawable/finnkino_button" 
+                        android:paddingTop="15dip"/>
+                </LinearLayout>
             </LinearLayout>
 
             <TextView
@@ -120,7 +176,8 @@
                 android:id="@+id/movie_description"
                 style="@style/data"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip" />
         </LinearLayout>
     </ScrollView>
 
