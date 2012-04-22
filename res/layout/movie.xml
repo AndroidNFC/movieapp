@@ -5,8 +5,8 @@
     android:orientation="vertical" >
 
     <include
-        android:id="@+id/topbar"
-        layout="@layout/topbar" />
+    android:id="@+id/topbar"
+    layout="@layout/topbar" />
 
     <ScrollView
         android:id="@+id/movie_results"
@@ -102,32 +102,31 @@
                 android:orientation="vertical"
                 android:paddingBottom="10dip" >
 
-                 <LinearLayout
+                <LinearLayout
                     android:id="@+id/movie_schedule_title_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="5dip" >
-                    
-                     <TextView
-                         android:id="@+id/movie_theater_title"
-                         style="@style/legend"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_weight="0.8"
-                         android:text="Theater schedule:" />
-                     
-                      <TextView
-                          android:id="@+id/movie_theater_date"
-                          style="@style/data"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_weight="0.17"
-                          android:gravity="right"
-                          android:text="XXX yyyy-MM-dd" />
 
-                 </LinearLayout>
-                
+                    <TextView
+                        android:id="@+id/movie_theater_title"
+                        style="@style/legend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:text="Theater schedule:" />
+
+                    <TextView
+                        android:id="@+id/movie_theater_date"
+                        style="@style/data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.17"
+                        android:gravity="right"
+                        android:text="XXX yyyy-MM-dd" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/movie_schedule_wrapper"
                     android:layout_width="fill_parent"
@@ -154,14 +153,30 @@
                         <!-- android:layout_height="wrap_content" -->
                         <!-- android:text="Data" /> -->
                     </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/tickets_image"
-                        android:layout_width="100dip"
+
+                    <LinearLayout
+                        android:id="@+id/movie_schedule_data_layout"
+                        android:layout_width="99dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:src="@drawable/finnkino_button" 
-                        android:paddingTop="15dip"/>
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/tickets_image"
+                            android:layout_width="100dip"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:paddingTop="15dip"
+                            android:src="@drawable/finnkino_button" />
+
+                        <TextView
+                            android:id="@+id/tickets_text"
+                            style="@style/data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Get tickets" />
+
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 

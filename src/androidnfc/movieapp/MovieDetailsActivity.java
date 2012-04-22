@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,6 +46,7 @@ import androidnfc.movieapp.parsers.FinnkinoHandler;
 public class MovieDetailsActivity extends Activity {
 
 	private final String XML_PARSER_DEBUG_TAG = "XMLParserActivity";
+	private final String TICKETS_URL = "https://m.finnkino.fi/Websales/Movie/";
 	private final SimpleDateFormat FINNKINO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.UK);
 	private final SimpleDateFormat DATUM_FORMAT = new SimpleDateFormat("EEE yyyy-MM-dd", Locale.UK);
 	private final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.UK);
@@ -68,9 +71,11 @@ public class MovieDetailsActivity extends Activity {
 	private LinearLayout scheduleRoot;
 	private LinearLayout scheduleData;
 	private TextView scheduleDate;
+	private TextView ticketText;
+	private ImageView ticketImage;
 
-
-
+	private String currentFinnkinoId;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,7 +93,23 @@ public class MovieDetailsActivity extends Activity {
 		scheduleRoot = (LinearLayout) findViewById(R.id.movie_schedule_layout);
 		scheduleData = (LinearLayout) findViewById(R.id.movie_schedule_data_layout);
 		scheduleDate = (TextView) findViewById(R.id.movie_theater_date);
-	
+		ticketText =  (TextView) findViewById(R.id.tickets_text);
+		ticketImage = (ImageView) findViewById(R.id.tickets_image);
+		
+		OnClickListener l = new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				if (currentFinnkinoId != null) {
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TICKETS_URL+currentFinnkinoId));
+					startActivity(browserIntent);
+				}
+				
+			}
+		};
+		
+		ticketText.setOnClickListener(l);
+		ticketImage.setOnClickListener(l);
+		
 		// TODO Glue for Top panel. This should be integrated in some
 		// TopPanelView-widget or so
 		{
@@ -119,8 +140,8 @@ public class MovieDetailsActivity extends Activity {
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
 		if (extras != null) {
-			Object o1 = extras.get(Constants.EXTRAS_KEY_IMDB_ID);
-			Object o2 = extras.get(Constants.EXTRAS_KEY_FINNKINO_ID);
+			final Object o1 = extras.get(Constants.EXTRAS_KEY_IMDB_ID);
+			final Object o2 = extras.get(Constants.EXTRAS_KEY_FINNKINO_ID);
 			Object shows = null;
 			if (extras.containsKey(Constants.EXTRAS_SHOWS)) {
 				shows = extras.get(Constants.EXTRAS_SHOWS);
@@ -131,11 +152,14 @@ public class MovieDetailsActivity extends Activity {
 			}
 			final String imdbId = o1.toString();
 			currentShows = shows;
+			
 			try {
 				// Load stuff async
 				spinner.setVisibility(View.VISIBLE);
 				resultsLayout.setVisibility(View.GONE);
 				Thread t = new Thread() {
+
+				
 
 					public void run() {
 						ImdbMovie movie = ImdbJSONParser.create().fetchMovie(imdbId);
@@ -143,6 +167,12 @@ public class MovieDetailsActivity extends Activity {
 							throw new UnsupportedOperationException();
 						}
 						currentMovie = movie;
+						
+						if (o2.toString() != null) {
+							currentFinnkinoId = o2.toString();
+						} else {
+							currentFinnkinoId = null;
+						}
 						
 						// TODO: Add image cache
 						bitmapResult = ImageLoader.loadImage(currentMovie
@@ -181,6 +211,7 @@ public class MovieDetailsActivity extends Activity {
 			if (currentShows instanceof List) {
 				
 				scheduleRoot.setVisibility(View.VISIBLE);
+				
 				
 				List<Show> shows = (List<Show>) currentShows;
 				Map<String, Map<String, List<Date>>> map = new HashMap<String, Map<String,List<Date>>>();
