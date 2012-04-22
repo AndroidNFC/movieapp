@@ -100,7 +100,7 @@ public class MovieDetailsActivity extends Activity {
 				}
 			});
 			ImageView search = (ImageView) findViewById(R.id.topbarSearch);
-			search.setOnClickListener(new View.OnClickListener() {
+			search.setOnClickListener(new View.OnClickListener() { 
 
 				public void onClick(View v) {
 					Intent intent = new Intent(MovieDetailsActivity.this,

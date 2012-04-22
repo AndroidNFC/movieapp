@@ -54,4 +54,8 @@ public class ImageAdapter extends BaseAdapter {
 		
 	}
 	
+	public void setItem(int position, ImageView item) {
+		images.set(position, item);
+	}
+	
 }

@@ -22,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import androidnfc.movieapp.common.Constants;
 import androidnfc.movieapp.models.Movie;
 import androidnfc.movieapp.models.SearchResultMovie;
+import androidnfc.movieapp.parsers.ImdbJSONParser;
 
 public class MovieappActivity extends Activity {
 
@@ -37,7 +38,6 @@ public class MovieappActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
 		// TODO Glue for Top Panel. This should be integrated in some
 		// TopPanelView-widget or so
 		{
@@ -67,6 +67,21 @@ public class MovieappActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(MovieappActivity.this,
 						MovieDetailsActivity.class);
+				if (selectedMovie.getImdbId() == null) {
+					ImdbJSONParser parser = ImdbJSONParser.create();
+					String originalTitle = selectedMovie.getTitle();
+					List<SearchResultMovie> searched = parser.search(originalTitle);
+					if (searched.size() == 0) {
+						Log.e("MOVIEAPP",
+								"No search result for movie " + originalTitle);
+						return;
+					} else {
+						
+						SearchResultMovie movie = searched.get(0);
+						selectedMovie.setImdbId(movie.getImdbId());
+					}
+				}
+				
 				intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, selectedMovie.getImdbId());
 				intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID,
 						selectedMovie.getFinnkinoId());
