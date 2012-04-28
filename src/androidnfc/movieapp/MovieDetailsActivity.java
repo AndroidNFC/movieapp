@@ -26,12 +26,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import androidnfc.movieapp.common.Constants;
@@ -70,11 +75,12 @@ public class MovieDetailsActivity extends Activity {
 	};
 	private LinearLayout scheduleRoot;
 	private LinearLayout scheduleData;
-	private TextView scheduleDate;
+	private Spinner scheduleDate;
 	private TextView ticketText;
 	private ImageView ticketImage;
 
 	private String currentFinnkinoId;
+	private ArrayAdapter<CharSequence> dataAdapter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -92,9 +98,14 @@ public class MovieDetailsActivity extends Activity {
 		spinner = (ProgressBar) findViewById(R.id.movie_loading);
 		scheduleRoot = (LinearLayout) findViewById(R.id.movie_schedule_layout);
 		scheduleData = (LinearLayout) findViewById(R.id.movie_schedule_data_layout);
-		scheduleDate = (TextView) findViewById(R.id.movie_theater_date);
+		scheduleDate = (Spinner) findViewById(R.id.movie_theater_date); 
 		ticketText =  (TextView) findViewById(R.id.tickets_text);
 		ticketImage = (ImageView) findViewById(R.id.tickets_image);
+		
+		dataAdapter = new ArrayAdapter<CharSequence>(getApplicationContext(), android.R.layout.simple_spinner_item);
+		
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		scheduleDate.setAdapter(dataAdapter);
 		
 		OnClickListener l = new View.OnClickListener() {
 			
@@ -205,17 +216,17 @@ public class MovieDetailsActivity extends Activity {
 			Log.i("MovieDetailsActivity", "Displayin");
 			poster.setImageBitmap(bitmapResult);
 		}
-		
+		scheduleRoot.setVisibility(View.VISIBLE);
 		if (currentShows != null) {
 			scheduleData.removeAllViews();
 			if (currentShows instanceof List) {
 				
-				scheduleRoot.setVisibility(View.VISIBLE);
+				
 				
 				
 				List<Show> shows = (List<Show>) currentShows;
-				Map<String, Map<String, List<Date>>> map = new HashMap<String, Map<String,List<Date>>>();
-				Context c = this.getApplicationContext();
+				final Map<String, Map<String, List<Date>>> map = new HashMap<String, Map<String,List<Date>>>();
+				final Context c = this.getApplicationContext();
 				for (Show show : shows) {
 					try {
 						String d = show.getShowStart().split("T")[0];
@@ -241,39 +252,53 @@ public class MovieDetailsActivity extends Activity {
 					}
 				}
 				
+			  
+
+				dataAdapter.clear();
 				
-				
-				for (String key : map.keySet()) {
-					Map<String, List<Date>> dmap = map.get(key);
-					for (String location : dmap.keySet()) {
-						
-						List<Date> l = dmap.get(location);
-						// TEMPORARY GLUE
-						{
-						scheduleDate.setText(DATUM_FORMAT.format(l.get(0)));
-						}
-						TextView description = new TextView(c);
-						description.setText(location+":");
-						description.setTextColor(Color.parseColor("#a4a4a4"));
-						description.setPadding(0, 5, 5, 2);
-						scheduleData.addView(description);
-						
-						int i = 0;
-						String dateString = "";
-						for (Date date : l) {
-							dateString += TIME_FORMAT.format(date);
-							if (i < l.size()-1) {
-								dateString += ", ";
+				scheduleDate.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+					public void onItemSelected(AdapterView<?> parent, View view,
+							int pos, long id) {
+						String key = parent.getItemAtPosition(pos).toString();
+						Map<String, List<Date>> dmap = map.get(key);
+						dataAdapter.add(key);
+						scheduleData.removeAllViews();
+						for (String location : dmap.keySet()) {
+							
+							List<Date> l = dmap.get(location);
+							TextView description = new TextView(c);
+							description.setText(location+":");
+							description.setTextColor(Color.parseColor("#a4a4a4"));
+							description.setPadding(0, 5, 5, 2);
+							scheduleData.addView(description);
+							
+							int i = 0;
+							String dateString = "";
+							for (Date date : l) {
+								dateString += TIME_FORMAT.format(date);
+								if (i < l.size()-1) {
+									dateString += ", ";
+								}
+								i++;
 							}
-							i++;
+							TextView data = new TextView(c);
+							data.setText(dateString);
+							data.setTextColor(Color.parseColor("#ffffff"));
+							scheduleData.addView(data);
 						}
-						TextView data = new TextView(c);
-						data.setText(dateString);
-						data.setTextColor(Color.parseColor("#ffffff"));
-						scheduleData.addView(data);
 					}
+
+					public void onNothingSelected(AdapterView<?> arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+				for (String key : map.keySet()) {
+					dataAdapter.add(key);
 				}
-				//this.showsText.setText(showsText);
+				scheduleDate.setSelection(0);
 			}
 			Log.i("MovieDetailsActivity", "HASZ SHOWS! "+currentShows);
 		} else {

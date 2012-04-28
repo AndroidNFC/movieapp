@@ -63,16 +63,7 @@ public class FinnkinoHandler extends DefaultHandler {
 	public void startElement(String namespaceURI, String localName,
 			String qName, Attributes attrs) {
 		tempValue = null;
-		if (qName.equals("Events")) {
-
-			this.movieList = new LinkedList<Movie>();
-
-		} else if (qName.equals("Shows")) {
-
-			this.showList = new LinkedList<Show>();
-			this.movieList = new LinkedList<Movie>();
-
-		} else if (qName.equals("Event")) {
+		if (qName.equals("Event")) {
 
 			this.tempMovie = new Movie();
 

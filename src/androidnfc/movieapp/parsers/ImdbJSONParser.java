@@ -135,7 +135,7 @@ public class ImdbJSONParser {
 				m.setTitle(o.getString("Title"));
 				return m;
 			} else {
-				Log.e(DEBUG_TAG, "Error in parsing " + id);
+				Log.e(DEBUG_TAG, "Error in parsing " + json);
 			}
 			return null;
 		} catch (Exception e) {

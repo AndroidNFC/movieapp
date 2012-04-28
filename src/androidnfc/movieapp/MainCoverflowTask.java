@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class MainCoverflowTask extends
 		emptyCover = (ImageView) activity.findViewById(R.id.main_emptycover);
 		
 		FinnkinoParser parser = new FinnkinoParser();
-		List<Movie> movies = parser.getUpcomingEvents();
+		List<Movie> movies = parser.getUpcomingEvents(new Date(), 7);
 
 		this.movies = constructSearchResults(movies);
 		List<ImageView> coverImages = new LinkedList<ImageView>();
