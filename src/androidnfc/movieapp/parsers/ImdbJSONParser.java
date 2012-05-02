@@ -58,20 +58,23 @@ public class ImdbJSONParser {
 						JSONObject o = popular.getJSONObject(i);
 						result.add(jsonObjectToMovie(o));
 					}
-				}else if (a.has("title_exact")) {
+				}
+				if (a.has("title_exact")) {
 						JSONArray popular = a.getJSONArray("title_exact");
 						for (int i = 0; i < popular.length(); i++) {
 							JSONObject o = popular.getJSONObject(i);
 							result.add(jsonObjectToMovie(o));
 						}
 					
-				} else if (a.has("title_approx")) {
+				}
+				if (a.has("title_approx")) {
 					JSONArray approx = a.getJSONArray("title_approx");
 					for (int i = 0; (i < approx.length() && i < 3); i++) {
 						JSONObject o = approx.getJSONObject(i);
 						result.add(jsonObjectToMovie(o));
 					}
-				} else {
+				} 
+				if (result.size() == 0) {
 					throw new UnsupportedOperationException("No movie found");
 				}
 			}

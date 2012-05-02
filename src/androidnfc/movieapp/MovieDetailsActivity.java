@@ -203,7 +203,6 @@ public class MovieDetailsActivity extends Activity {
 							movie.setId(imdbId);
 							movie.setTitle(movieData.getTitle());
 							movie.setPosterUrl(movieData.getImageURL());
-							movie.setPlot(movieData.getDescription());
 						}
 						currentMovie = movie;
 
