@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,6 @@ public class MovieappActivity extends Activity {
 	private ImageView emptyCover;
 	private SearchResultMovie selectedMovie;
 	private MainCoverflowTask coverflowTask;
-	private Button button;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -60,33 +60,18 @@ public class MovieappActivity extends Activity {
 		movieTitleText = (TextView) findViewById(R.id.main_movietitle);
 		emptyCover = (ImageView) findViewById(R.id.main_emptycover);
 
-		button = (Button) findViewById(R.id.select_movie);
-		button.setVisibility(View.GONE);
-		button.setOnClickListener(new OnClickListener() {
+		coverFlow.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view, int i,
+					long l) {
+				click();
+
+			}
+		});
+		movieTitleText.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				Intent intent = new Intent(MovieappActivity.this,
-						MovieDetailsActivity.class);
-				if (selectedMovie.getImdbId() == null) {
-					ImdbJSONParser parser = ImdbJSONParser.create();
-					String originalTitle = selectedMovie.getTitle();
-					List<SearchResultMovie> searched = parser.search(originalTitle);
-					if (searched.size() == 0) {
-						Log.e("MOVIEAPP",
-								"No search result for movie " + originalTitle);
-						return;
-					} else {
-						
-						SearchResultMovie movie = searched.get(0);
-						selectedMovie.setImdbId(movie.getImdbId());
-					}
-				}
-				
-				intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, selectedMovie.getImdbId());
-				intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID,
-						selectedMovie.getFinnkinoId());
-				intent.putExtra(Constants.EXTRAS_SHOWS, (Movie.SerializableShowList) selectedMovie.getShows());
-				startActivity(intent);
+				click();
 			}
 		});
 		movieTitleText.setText("");
@@ -98,9 +83,7 @@ public class MovieappActivity extends Activity {
 
 	private void setSelectedMovie(SearchResultMovie movie) {
 		this.selectedMovie = movie;
-		button.setVisibility(View.VISIBLE);
 		movieTitleText.setText(movie.getTitle());
-
 	}
 
 	public final class CoverSelectedListener implements OnItemSelectedListener {
@@ -116,5 +99,29 @@ public class MovieappActivity extends Activity {
 			// Do nothing?
 		}
 
+	}
+
+	private void click() {
+		Intent intent = new Intent(MovieappActivity.this,
+				MovieDetailsActivity.class);
+		if (selectedMovie.getImdbId() == null) {
+			ImdbJSONParser parser = ImdbJSONParser.create();
+			String originalTitle = selectedMovie.getTitle();
+			List<SearchResultMovie> searched = parser.search(originalTitle);
+			if (searched.size() == 0) {
+				Log.e("MOVIEAPP", "No search result for movie " + originalTitle);
+				return;
+			} else {
+				SearchResultMovie movie = searched.get(0);
+				selectedMovie.setImdbId(movie.getImdbId());
+			}
+		}
+
+		intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, selectedMovie.getImdbId());
+		intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID,
+				selectedMovie.getFinnkinoId());
+		intent.putExtra(Constants.EXTRAS_FINNKINO_DATA,
+				selectedMovie);
+		startActivity(intent);
 	}
 }

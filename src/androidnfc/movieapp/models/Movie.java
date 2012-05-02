@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Movie {
 
 	private int movieID;
@@ -21,16 +22,11 @@ public class Movie {
 	private String[] genres;
 	private String synopsis;
 	private String eventURL;
-	private String imageURL;
+	private String imageURL; 
 	private String videoURL;
-	private final List<Show> shows = new SerializableShowList();
+	private final SerializableShowList shows = SerializableShowList.newInstance();
 	
-	public class SerializableShowList extends ArrayList<Show> implements Serializable {
-
-		private static final long serialVersionUID = 1L;
-		
-	}
-
+	
 	
 	public Movie() {
 		this.title = "unnamed";
@@ -203,7 +199,7 @@ public class Movie {
 			   "Image URL: " + this.imageURL;
 	}
 
-	public List<Show> getShows() {
+	public SerializableShowList getShows() {
 		return this.shows ;
 	}
 

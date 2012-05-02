@@ -1,24 +1,26 @@
 package androidnfc.movieapp.models;
 
-public class ImdbMovie {
+import java.io.Serializable;
 
-	private String id;
-	private String title;
-	private String rating;
-	private String rated;
-	private String released;
-	private int productionYear;
-	private String runtime;
+public class ImdbMovie implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	private String id= "N/A";
+	private String title= "N/A";
+	private String rating = "N/A";
+	private String rated= "N/A";
+	private String released = "2012";
+	private int productionYear = 2012;
+	private String runtime= "N/A";
 	private String[] genres;
-	private String director;
-	private String writer;
-	private String actors;
-	private String plot;
-	private String posterUrl;
+	private String director= "N/A";
+	private String writer= "N/A";
+	private String actors= "N/A";
+	private String plot= "N/A";
+	private String posterUrl= "N/A";
 	private long votes;
 	
 	public ImdbMovie() {
-		this.title = "unnamed";
 	}
 
 	public String getId() {

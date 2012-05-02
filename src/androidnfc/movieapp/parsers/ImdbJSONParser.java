@@ -15,6 +15,9 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EncodingUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -99,13 +102,14 @@ public class ImdbJSONParser {
 	}
 
 	public ImdbMovie fetchMovie(String id) {
-
+		String json = "N/A";
 		try {
-			String json = getHttpJsonResponse(IMDBAPI_URL + "?plot=full&i="
+			json = getHttpJsonResponse(IMDBAPI_URL + "?plot=full&i="
 					+ id);
 			if (json != null && json.length() > 2
 					&& !json.contains("Incorrect IMDb ID")
 					&& !json.contains("Parse Error")) {
+				
 				JSONObject o = new JSONObject(json);
 				ImdbMovie m = new ImdbMovie();
 				m.setActors(o.getString("Actors"));
@@ -137,10 +141,8 @@ public class ImdbJSONParser {
 			} else {
 				Log.e(DEBUG_TAG, "Error in parsing " + json);
 			}
-			return null;
 		} catch (Exception e) {
-
-			Log.e(DEBUG_TAG, "Failed to parse " + id, e);
+			Log.i(DEBUG_TAG, "Error in parsing " + json);
 
 		}
 		return null;
@@ -149,9 +151,12 @@ public class ImdbJSONParser {
 	private String getHttpJsonResponse(String url) {
 		StringBuilder builder = new StringBuilder();
 		try {
+			HttpParams httpParameters = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParameters, 25000);
+			HttpConnectionParams.setSoTimeout(httpParameters, 25000);
 
-			HttpClient client = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(url);
+			HttpClient client = new DefaultHttpClient(httpParameters);
+			HttpGet httpGet = new HttpGet(url);			
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();

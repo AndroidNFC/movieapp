@@ -99,9 +99,8 @@ public class MainCoverflowTask extends
 		}
 		
 		coverImageAdapter.loadImages(coverImages);
-		fetchMoviePoster(this.movies.get(1));
-		
-		
+		//fetchMoviePoster(this.movies.get(1));
+	
 
 		return this.movies;
 	}
@@ -140,32 +139,6 @@ public class MainCoverflowTask extends
 
 	}
 
-	@Deprecated
-	private List<SearchResultMovie> DepconstructSearchResults(List<Movie> movies) {
-		List<SearchResultMovie> result = new ArrayList<SearchResultMovie>();
-		ImdbJSONParser parser = ImdbJSONParser.create();
-		for (Movie m : movies) {
-			m.getOriginalTitle();
-			List<SearchResultMovie> searched = parser.search(m
-					.getOriginalTitle());
-			if (searched.size() == 0) {
-				Log.e("MOVIEAPP",
-						"No search result for movie " + m.getOriginalTitle());
-			} else {
-				Log.d("MOVIEAPP",
-						searched.size() + " results for movie "
-								+ m.getOriginalTitle());
-				SearchResultMovie movie = searched.get(0);
-				movie.setFinnkinoId(m.getEventID());
-				movie.setImageURL(m.getImageURL());
-				movie.setShows(m.getShows());
-				result.add(movie);
-			}
-		}
-
-		return result;
-	}
-
 	private List<SearchResultMovie> constructSearchResults(List<Movie> movies) {
 		List<SearchResultMovie> result = new ArrayList<SearchResultMovie>();
 		for (Movie m : movies) {
@@ -184,7 +157,10 @@ public class MainCoverflowTask extends
 
 	@Override
 	protected void onPostExecute(List<SearchResultMovie> movies) {
-
+		if (movies.size() == 0) {
+			Log.e("DEBUG", "0 movies!");
+			return;
+		}
 		coverFlow.setAdapter(coverImageAdapter);
 
 		int coverCount = coverImageAdapter.getCount();
@@ -200,7 +176,6 @@ public class MainCoverflowTask extends
 		coverFlow.setSelection(initialCoverPos, false);
 		coverFlow.setAnimationDuration(500);
 		coverFlow.setOnItemSelectedListener(listener);
-
 		movieTitleText.setText(movies.get(initialCoverPos).getTitle());
 
 		try {

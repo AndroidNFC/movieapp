@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="gallery_poster_height">400dip</dimen>
+    <dimen name="gallery_poster_width">120dip</dimen>
+
     <style name="MovieappTheme" parent="android:Theme.Black.NoTitleBar">
         <item name="android:textColor">#e4e4e4</item>
     </style>
@@ -8,25 +11,26 @@
     <style name="h1" parent="android:style/TextAppearance.Large">
         <item name="android:textColor">#0099cc</item>
     </style>
+
     <style name="h3" parent="android:style/TextAppearance.Large">
         <item name="android:textColor">#a4a4a4</item>
     </style>
-    
-   <style name="h2" parent="android:style/TextAppearance.Medium">
+
+    <style name="h2" parent="android:style/TextAppearance.Medium">
         <item name="android:textColor">#a4a4a4</item>
     </style>
 
     <style name="data" parent="android:style/TextAppearance.Small">
         <item name="android:textColor">#e4e4e4</item>
-<!--         <item name="android:paddingTop">3dip</item> -->
+        <!-- <item name="android:paddingTop">3dip</item> -->
         <item name="android:paddingBottom">5dip</item>
     </style>
 
     <style name="legend" parent="android:style/TextAppearance.Small">
         <item name="android:textColor">#a4a4a4</item>
-<!--         <item name="android:height">34dip</item> -->
+        <!-- <item name="android:height">34dip</item> -->
         <item name="android:paddingTop">3dip</item>
-<!--         <item name="android:paddingBottom">3dip</item> -->
+        <!-- <item name="android:paddingBottom">3dip</item> -->
     </style>
 
     <style name="TopBar">
@@ -69,13 +73,15 @@
     <style name="SearchResultDescription">
         <item name="android:textColor">#a4a4a4</item>
     </style>
-	
-      <style name="ResultLayout_line">
+
+    <style name="ResultLayout_line">
         <item name="android:background">#535353</item>
         <item name="android:layout_height">2dip</item>
     </style>
-     <style name="SearchResult_line">
+
+    <style name="SearchResult_line">
         <item name="android:background">#4a4a4a</item>
         <item name="android:layout_height">1dip</item>
     </style>
+
 </resources>
