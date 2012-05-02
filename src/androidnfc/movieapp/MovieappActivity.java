@@ -42,7 +42,7 @@ public class MovieappActivity extends Activity {
 		// TopPanelView-widget or so
 		{
 			ImageView back = (ImageView) findViewById(R.id.topbar_back);
-			back.setAlpha(0);
+			back.setImageResource(R.drawable.ic_launcher);
 
 			ImageView search = (ImageView) findViewById(R.id.topbarSearch);
 			search.setOnClickListener(new View.OnClickListener() {
