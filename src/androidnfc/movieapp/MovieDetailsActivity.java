@@ -282,7 +282,6 @@ public class MovieDetailsActivity extends Activity {
 					public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 						String key = parent.getItemAtPosition(pos).toString();
 						Map<String, List<Date>> dmap = map.get(key);
-						dataAdapter.add(key);
 						scheduleData.removeAllViews();
 						for (String location : dmap.keySet()) {
 

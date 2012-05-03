@@ -34,6 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import androidnfc.movieapp.MovieappActivity.CoverSelectedListener;
+import androidnfc.movieapp.MovieappActivity.FlowUpdatedListener;
 import androidnfc.movieapp.common.Constants;
 import androidnfc.movieapp.common.ImageLoader;
 import androidnfc.movieapp.models.ImdbMovie;
@@ -61,13 +62,16 @@ public class MainCoverflowTask extends
 	private Movie selectedMovie;
 
 	private CoverSelectedListener listener;
+
+	private FlowUpdatedListener updateListener;
 	
 	public MainCoverflowTask(Activity activity,
-			CoverSelectedListener coverSelectedListener) {
+			CoverSelectedListener coverSelectedListener, FlowUpdatedListener updateListener) {
 		this.activity = activity;
 		movies = new ArrayList<SearchResultMovie>();
 		coverImageAdapter = new ImageAdapter(activity);
 		listener = coverSelectedListener;
+		this.updateListener = updateListener;
 	}
 
 	@Override
@@ -193,11 +197,13 @@ public class MainCoverflowTask extends
 						if (pos > 0 && pos < size-1) {
 							fetchMoviePoster(movies.get(pos));
 						}
-						
+						if (pos % 3 == 0) {
+							updateListener.onFlowUpdate();
+						}
 					}
 					fetchMoviePoster(movies.get(0));
 					fetchMoviePoster(movies.get(size-1));
-
+					updateListener.onFlowUpdate();
 				}
 			};
 			t.start();

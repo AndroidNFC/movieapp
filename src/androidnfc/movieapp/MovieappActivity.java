@@ -48,36 +48,48 @@ public class MovieappActivity extends Activity {
 			search.setOnClickListener(new View.OnClickListener() {
 
 				public void onClick(View v) {
-					Intent intent = new Intent(MovieappActivity.this,
-							SearchActivity.class);
+					Intent intent = new Intent(MovieappActivity.this, SearchActivity.class);
 					MovieappActivity.this.startActivity(intent);
 				}
 			});
 		}
 
 		coverFlow = (CoverFlow) findViewById(R.id.main_coverflow);
-		coverFlow.setUnselectedAlpha(0.7f);
+		coverFlow.setUnselectedAlpha(0.5f);
 		movieTitleText = (TextView) findViewById(R.id.main_movietitle);
 		emptyCover = (ImageView) findViewById(R.id.main_emptycover);
 
 		coverFlow.setOnItemClickListener(new OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> parent, View view, int i,
-					long l) {
+			public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
 				click();
 
 			}
 		});
+
 		movieTitleText.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				click();
+
 			}
 		});
 		movieTitleText.setText("");
 		movieTitleText.setGravity(Gravity.CENTER_HORIZONTAL);
 
-		coverflowTask = new MainCoverflowTask(this, new CoverSelectedListener());
+		coverflowTask = new MainCoverflowTask(this, new CoverSelectedListener(), new FlowUpdatedListener() {
+
+			@Override
+			void onFlowUpdate() {
+				MovieappActivity.this.runOnUiThread(new Runnable() {
+
+					public void run() {
+						((ImageAdapter) coverFlow.getAdapter()).notifyDataSetChanged();
+					}
+				});
+
+			}
+		});
 		coverflowTask.execute("http://www.finnkino.fi/xml/Schedule/");
 	}
 
@@ -86,24 +98,8 @@ public class MovieappActivity extends Activity {
 		movieTitleText.setText(movie.getTitle());
 	}
 
-	public final class CoverSelectedListener implements OnItemSelectedListener {
-
-		public void onItemSelected(AdapterView<?> parent, View view,
-				int position, long id) {
-			coverFlow.setSelection(position);
-			SearchResultMovie movie = coverflowTask.getMovies().get(position);
-			setSelectedMovie(movie);
-		}
-
-		public void onNothingSelected(AdapterView<?> arg0) {
-			// Do nothing?
-		}
-
-	}
-
 	private void click() {
-		Intent intent = new Intent(MovieappActivity.this,
-				MovieDetailsActivity.class);
+		Intent intent = new Intent(MovieappActivity.this, MovieDetailsActivity.class);
 		if (selectedMovie.getImdbId() == null) {
 			ImdbJSONParser parser = ImdbJSONParser.create();
 			String originalTitle = selectedMovie.getTitle();
@@ -118,10 +114,26 @@ public class MovieappActivity extends Activity {
 		}
 
 		intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, selectedMovie.getImdbId());
-		intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID,
-				selectedMovie.getFinnkinoId());
-		intent.putExtra(Constants.EXTRAS_FINNKINO_DATA,
-				selectedMovie);
+		intent.putExtra(Constants.EXTRAS_KEY_FINNKINO_ID, selectedMovie.getFinnkinoId());
+		intent.putExtra(Constants.EXTRAS_FINNKINO_DATA, selectedMovie);
 		startActivity(intent);
+	}
+
+	public final class CoverSelectedListener implements OnItemSelectedListener {
+
+		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			coverFlow.setSelection(position);
+			SearchResultMovie movie = coverflowTask.getMovies().get(position);
+			setSelectedMovie(movie);
+		}
+
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// Do nothing?
+		}
+	}
+
+	public abstract class FlowUpdatedListener {
+
+		abstract void onFlowUpdate();
 	}
 }
