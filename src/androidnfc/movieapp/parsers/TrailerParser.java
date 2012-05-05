@@ -26,35 +26,7 @@ public class TrailerParser {
 	public List<Trailer> getTrailersByID(String imdbID) {
 		URL url;
 		try {
-			url = new URL("http://api.traileraddict.com/?count=1&imdb=" + imdbID + "&width=" + displayWidth);
-
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			SAXParser parser = spf.newSAXParser();
-
-			XMLReader reader = parser.getXMLReader();
-			TrailerHandler handler = new TrailerHandler();
-			reader.setContentHandler(handler);
-
-			reader.parse(new InputSource(url.openStream()));
-			List<Trailer> trailerList = handler.getParsedTrailers();
-
-			return trailerList;
-			
-		} catch (Exception e) {
-			
-			Log.e(TRAILERADDICT_XML_PARSER_DEBUG_TAG, "Failed to parse trailer information.", e);
-			
-		}
-		return null;
-	}
-	
-	public List<Trailer> getTrailersByMovieTitle(String title) {
-		URL url;
-		try {
-			String searchKey = title.toLowerCase().replace(' ', '-');
-			Log.d(TRAILERADDICT_XML_PARSER_DEBUG_TAG, "Search key: " + searchKey);
-			
-			url = new URL("http://api.traileraddict.com/?film=" + searchKey + "&width=" + displayWidth);
+			url = new URL("http://api.traileraddict.com/?count=100&imdb=" + imdbID + "&width=" + displayWidth);
 
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			SAXParser parser = spf.newSAXParser();

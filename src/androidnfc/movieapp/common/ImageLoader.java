@@ -13,7 +13,7 @@ public class ImageLoader {
 		Bitmap bitmap = null;
 
 		try {
-
+			Log.d("DEBUG", "Image url: "+url);
 			URL imageURL = new URL(url);
 			try {
 				bitmap = BitmapFactory.decodeStream(imageURL.openConnection()

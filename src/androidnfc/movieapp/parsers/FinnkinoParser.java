@@ -49,7 +49,7 @@ public class FinnkinoParser {
 		return null;
 	}
 	
-	public List<Movie> getUpcomingEvents(Date d, int days) {
+	public List<Movie> getUpcomingEvents(Date d, int days, int eventId) {
 		
 		List<Movie> movieList = new ArrayList<Movie>();
 		Calendar c = Calendar.getInstance();
@@ -61,9 +61,14 @@ public class FinnkinoParser {
 			XMLReader reader = parser.getXMLReader();
 			FinnkinoHandler handler = new FinnkinoHandler();
 			reader.setContentHandler(handler);
+			String postfix = "";
+    		if (eventId != 0) {
+    			postfix = "&eventID="+eventId;
+    		}
         	for(int i=1; i <= days; i++) {
         		c.add(Calendar.DAY_OF_YEAR, 1);
-        		URL url = new URL ("http://www.finnkino.fi/xml/Schedule/?dt="+API_DATE_FORMAT.format(c.getTime()));
+        		
+        		URL url = new URL ("http://www.finnkino.fi/xml/Schedule/?dt="+API_DATE_FORMAT.format(c.getTime())+postfix);
         		reader.parse(new InputSource(url.openStream()));
         	}
 			movieList = handler.getParsedMovies();
@@ -73,6 +78,9 @@ public class FinnkinoParser {
         
         return movieList;
 		
+	}
+	public List<Movie> getUpcomingEvents(Date d, int days) {
+		return this.getUpcomingEvents(d, days, 0);
 	}
 	
 }

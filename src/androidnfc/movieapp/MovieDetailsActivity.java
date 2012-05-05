@@ -339,6 +339,7 @@ public class MovieDetailsActivity extends Activity {
 		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.trailer:
+		
 			intent = new Intent(MovieDetailsActivity.this, WebDisplay.class);
 			Log.d(XML_PARSER_DEBUG_TAG, "imdbID: " + currentMovie.getId());
 			intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, currentMovie.getId());

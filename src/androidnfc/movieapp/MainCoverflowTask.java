@@ -143,7 +143,7 @@ public class MainCoverflowTask extends
 
 	}
 
-	private List<SearchResultMovie> constructSearchResults(List<Movie> movies) {
+	public static List<SearchResultMovie> constructSearchResults(List<Movie> movies) {
 		List<SearchResultMovie> result = new ArrayList<SearchResultMovie>();
 		for (Movie m : movies) {
 			m.getOriginalTitle();
