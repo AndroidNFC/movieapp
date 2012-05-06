@@ -3,8 +3,6 @@ package androidnfc.movieapp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +13,6 @@ import java.util.Set;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -27,35 +24,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidnfc.movieapp.common.Constants;
 import androidnfc.movieapp.common.ImageLoader;
 import androidnfc.movieapp.models.ImdbMovie;
-import androidnfc.movieapp.models.Movie;
 import androidnfc.movieapp.models.SearchResultMovie;
 import androidnfc.movieapp.models.Show;
-import androidnfc.movieapp.parsers.FinnkinoParser;
 import androidnfc.movieapp.parsers.ImdbJSONParser;
-import androidnfc.movieapp.parsers.FinnkinoHandler;
 
 public class MovieDetailsActivity extends Activity {
 
 	private final String XML_PARSER_DEBUG_TAG = "XMLParserActivity";
 	private final String TICKETS_URL_PREFIX = "https://m.finnkino.fi/Websales/Movie/";
+	private final String IMDB_URL_PREFIX = "http://www.imdb.com/title/";
 	private final String TICKETS_URL_POSTFIX = "/?dt=";
 	private final SimpleDateFormat WEBSALES_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy", Locale.UK);
 	private final SimpleDateFormat FINNKINO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.UK);
@@ -109,11 +99,9 @@ public class MovieDetailsActivity extends Activity {
 		ticketText = (TextView) findViewById(R.id.tickets_text);
 		ticketImage = (ImageView) findViewById(R.id.tickets_image);
 
-		dataAdapter = new ArrayAdapter<CharSequence>(getApplicationContext(),
-				android.R.layout.simple_spinner_item);
+		dataAdapter = new ArrayAdapter<CharSequence>(getApplicationContext(), android.R.layout.simple_spinner_item);
 
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		scheduleDate.setAdapter(dataAdapter);
 
 		OnClickListener l = new View.OnClickListener() {
@@ -127,10 +115,8 @@ public class MovieDetailsActivity extends Activity {
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
-					
-					
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-							Uri.parse(TICKETS_URL_PREFIX + currentFinnkinoId + postfix));
+
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TICKETS_URL_PREFIX + currentFinnkinoId + postfix));
 					startActivity(browserIntent);
 				}
 
@@ -154,8 +140,7 @@ public class MovieDetailsActivity extends Activity {
 			search.setOnClickListener(new View.OnClickListener() {
 
 				public void onClick(View v) {
-					Intent intent = new Intent(MovieDetailsActivity.this,
-							SearchActivity.class);
+					Intent intent = new Intent(MovieDetailsActivity.this, SearchActivity.class);
 					MovieDetailsActivity.this.startActivity(intent);
 				}
 			});
@@ -173,15 +158,19 @@ public class MovieDetailsActivity extends Activity {
 			final Object o1 = extras.get(Constants.EXTRAS_KEY_IMDB_ID);
 			final Object o2 = extras.get(Constants.EXTRAS_KEY_FINNKINO_ID);
 
-			final Object finnkinoData = extras.get(Constants.EXTRAS_FINNKINO_DATA);
-
 			// Just some glue here..
 			if (o1 == null || o2 == null) {
 				return;
 			}
 			final String imdbId = o1.toString();
+			final Object finnkinoData = extras.get(Constants.EXTRAS_FINNKINO_DATA);
+
 			final SearchResultMovie movieData = (SearchResultMovie) finnkinoData;
-			currentShows = movieData.getShows();
+
+			if (movieData != null) {
+				// Log.i("DEBUG", "Moviedata: " + movieData.getShows().size());
+				currentShows = movieData.getShows();
+			}
 
 			try {
 				// Load stuff async
@@ -189,6 +178,7 @@ public class MovieDetailsActivity extends Activity {
 				resultsLayout.setVisibility(View.GONE);
 				Thread t = new Thread() {
 
+					@Override
 					public void run() {
 						ImdbMovie movie = ImdbJSONParser.create().fetchMovie(imdbId);
 						if (movie == null) {
@@ -201,8 +191,10 @@ public class MovieDetailsActivity extends Activity {
 							});
 							movie = new ImdbMovie();
 							movie.setId(imdbId);
-							movie.setTitle(movieData.getTitle());
-							movie.setPosterUrl(movieData.getImageURL());
+							if (movieData != null) {
+								movie.setTitle(movieData.getTitle());
+								movie.setPosterUrl(movieData.getImageURL());
+							}
 						}
 						currentMovie = movie;
 
@@ -339,7 +331,7 @@ public class MovieDetailsActivity extends Activity {
 		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.trailer:
-		
+
 			intent = new Intent(MovieDetailsActivity.this, WebDisplay.class);
 			Log.d(XML_PARSER_DEBUG_TAG, "imdbID: " + currentMovie.getId());
 			intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, currentMovie.getId());
@@ -347,8 +339,7 @@ public class MovieDetailsActivity extends Activity {
 			MovieDetailsActivity.this.startActivity(intent);
 			return true;
 		case R.id.imdb:
-			intent = new Intent(MovieDetailsActivity.this, WebDisplay.class);
-			intent.putExtra(Constants.EXTRAS_KEY_IMDB_ID, currentMovie.getId());
+			intent = new Intent(Intent.ACTION_VIEW, Uri.parse(IMDB_URL_PREFIX + currentMovie.getId()));
 			MovieDetailsActivity.this.startActivity(intent);
 			return true;
 		default:

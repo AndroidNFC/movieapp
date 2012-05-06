@@ -2,12 +2,9 @@ package androidnfc.movieapp.parsers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,14 +15,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.apache.http.util.EncodingUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
+import androidnfc.movieapp.common.HardcodedImdbCache;
 import androidnfc.movieapp.models.ImdbMovie;
 import androidnfc.movieapp.models.SearchResultMovie;
 
@@ -60,12 +56,12 @@ public class ImdbJSONParser {
 					}
 				}
 				if (a.has("title_exact")) {
-						JSONArray popular = a.getJSONArray("title_exact");
-						for (int i = 0; i < popular.length(); i++) {
-							JSONObject o = popular.getJSONObject(i);
-							result.add(jsonObjectToMovie(o));
-						}
-					
+					JSONArray popular = a.getJSONArray("title_exact");
+					for (int i = 0; i < popular.length(); i++) {
+						JSONObject o = popular.getJSONObject(i);
+						result.add(jsonObjectToMovie(o));
+					}
+
 				}
 				if (a.has("title_approx")) {
 					JSONArray approx = a.getJSONArray("title_approx");
@@ -73,7 +69,7 @@ public class ImdbJSONParser {
 						JSONObject o = approx.getJSONObject(i);
 						result.add(jsonObjectToMovie(o));
 					}
-				} 
+				}
 				if (result.size() == 0) {
 					throw new UnsupportedOperationException("No movie found");
 				}
@@ -95,7 +91,7 @@ public class ImdbJSONParser {
 			desc = TextUtils.join("", TextUtils.split(desc, "<[^>]*>"));
 			r.setDescription(desc);
 			String titleStr = o.getString("title");
-			
+
 			r.setTitle(Html.fromHtml(titleStr).toString());
 			return r;
 		} catch (Exception e) {
@@ -107,12 +103,14 @@ public class ImdbJSONParser {
 	public ImdbMovie fetchMovie(String id) {
 		String json = "N/A";
 		try {
-			json = getHttpJsonResponse(IMDBAPI_URL + "?plot=full&i="
-					+ id);
-			if (json != null && json.length() > 2
-					&& !json.contains("Incorrect IMDb ID")
-					&& !json.contains("Parse Error")) {
-				
+			if (HardcodedImdbCache.STATIC_CACHE.containsKey(id)) {
+				json = HardcodedImdbCache.STATIC_CACHE.get(id);
+			} else {
+				json = getHttpJsonResponse(IMDBAPI_URL + "?plot=full&i=" + id);
+			}
+
+			if (json != null && json.length() > 2 && !json.contains("Incorrect IMDb ID") && !json.contains("Parse Error")) {
+
 				JSONObject o = new JSONObject(json);
 				ImdbMovie m = new ImdbMovie();
 				m.setActors(o.getString("Actors"));
@@ -159,14 +157,13 @@ public class ImdbJSONParser {
 			HttpConnectionParams.setSoTimeout(httpParameters, 25000);
 
 			HttpClient client = new DefaultHttpClient(httpParameters);
-			HttpGet httpGet = new HttpGet(url);			
+			HttpGet httpGet = new HttpGet(url);
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
 			if (statusCode == 200) {
 				HttpEntity entity = response.getEntity();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(entity.getContent()));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()));
 				String line;
 				while ((line = reader.readLine()) != null) {
 					builder.append(line);

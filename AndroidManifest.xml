@@ -30,7 +30,8 @@
         </activity>
         <activity
             android:name=".WebDisplay"
-            android:label="Web Display">
+            android:label="Web Display"
+            android:screenOrientation="landscape">
 		</activity>
         <activity
             android:name=".MovieDetailsActivity"

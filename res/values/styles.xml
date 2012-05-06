@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="gallery_poster_height">400dip</dimen>
-    <dimen name="gallery_poster_width">120dip</dimen>
+    <dimen name="gallery_poster_height">460dip</dimen>
+    <dimen name="gallery_poster_width">130dip</dimen>
 
     <style name="MovieappTheme" parent="android:Theme.Black.NoTitleBar">
         <item name="android:textColor">#e4e4e4</item>
