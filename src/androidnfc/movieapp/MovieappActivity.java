@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidnfc.movieapp.common.Constants;
 import androidnfc.movieapp.models.Movie;
 import androidnfc.movieapp.models.SearchResultMovie;
@@ -28,7 +29,7 @@ public class MovieappActivity extends Activity {
 	private TextView movieTitleText;
 	private SearchResultMovie selectedMovie;
 	private MainCoverflowTask coverflowTask;
-	String extraData1, extraData2, extraData3, extraData4, extraData5;
+	String extraData1, extraData2, extraData3, extraData4, extraData5, extraData6;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -37,29 +38,29 @@ public class MovieappActivity extends Activity {
 		setContentView(R.layout.main);
 		Bundle extras = getIntent().getExtras();
 		Log.i("DEBUU", "DaEEa: " + extras);
-		if (extras != null && savedInstanceState == null) {
+		// if (extras != null && savedInstanceState == null) {
+		if (extras != null) {
 			// Just where do we need all these..
 			extraData1 = extras.getString("serviceidmovie1");
 			extraData2 = extras.getString("serviceidmovie2");
 			extraData3 = extras.getString("serviceidmovie3");
 			extraData4 = extras.getString("serviceidmovie4");
 			extraData5 = extras.getString("serviceidmovie5");
-
-			// extraData4 = "298988";
-
-			// extraData5 = "tt1034314";
+			extraData6 = extras.getString("serviceidmovie6");
+			// extraData5 = "298988";
+			// extraData6 = "tt1034314";
 
 			Thread t = new Thread() {
 				@Override
 				public void run() {
 					FinnkinoParser parser = new FinnkinoParser();
-					List<Movie> movies = parser.getUpcomingEvents(new Date(), 7, Integer.parseInt(extraData4));
+					List<Movie> movies = parser.getUpcomingEvents(new Date(), 7, Integer.parseInt(extraData5));
 					if (movies == null || movies.size() != 1) {
 						return;
 					}
 					List<SearchResultMovie> searchResults = MainCoverflowTask.constructSearchResults(movies);
 					SearchResultMovie m = searchResults.get(0);
-					m.setImdbId(extraData5);
+					m.setImdbId(extraData6);
 					openMovieDetails(m);
 				}
 			};
@@ -192,5 +193,9 @@ public class MovieappActivity extends Activity {
 	public abstract class FlowUpdatedListener {
 
 		abstract void onFlowUpdate();
+	}
+
+	private void toast(String text) {
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
 }
